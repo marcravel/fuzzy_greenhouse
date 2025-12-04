@@ -1,5 +1,5 @@
 # --- Python virtual environment ---
-my_venv/
+.venv/
 
 # --- Python cache files ---
 __pycache__/
