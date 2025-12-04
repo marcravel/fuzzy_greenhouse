@@ -1,0 +1,27 @@
+# --- Python virtual environment ---
+my_venv/
+
+# --- Python cache files ---
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# --- Jupyter notebook checkpoints ---
+.ipynb_checkpoints/
+
+# --- VS Code settings ---
+.vscode/
+
+# --- Environment / package metadata ---
+*.egg-info/
+*.egg
+dist/
+build/
+
+# --- Logs ---
+*.log
+
+# --- OS-specific files ---
+.DS_Store
+Thumbs.db
