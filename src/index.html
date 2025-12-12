@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Greenhouse Fuzzy Controller</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f4f4f9; margin: 0; padding: 20px; color: #333; }
+    h1, h2, h3 { color: #2c3e50; }
+    .container { max-width: 1000px; margin: 0 auto; background: #fff; padding: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.1); border-radius: 8px; }
+    
+    /* Grid Layouts */
+    .section { margin-bottom: 30px; border-bottom: 2px solid #eee; padding-bottom: 20px; }
+    .grid-inputs { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; }
+    
+    /* Inputs Styling */
+    .input-group { background: #e8f5e9; padding: 10px; border-radius: 5px; }
+    .input-group label { display: block; font-weight: bold; font-size: 0.9em; }
+    .input-group input { width: 100%; padding: 5px; margin-top: 5px; box-sizing: border-box; }
+    
+    /* Tables */
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.9em; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
+    th { background-color: #4CAF50; color: white; }
+    tr:nth-child(even) { background-color: #f2f2f2; }
+    
+    /* Buttons */
+    .btn { background: #4CAF50; color: white; padding: 10px 20px; border: none; cursor: pointer; border-radius: 5px; font-size: 1em; margin-top: 10px; }
+    .btn:hover { background: #45a049; }
+    .btn-action { background: #2196F3; margin: 5px; }
+    
+    /* Highlights */
+    .highlight { font-weight: bold; color: #d32f2f; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>🌱 Akıllı Sera Fuzzy Kontrol Paneli</h1>
+
+  <div class="section">
+    <h2>1. Giriş Değişkenleri (Simülasyon Ayarları)</h2>
+    <div class="grid-inputs">
+      <div class="input-group"><label>Sıcaklık (°C)</label><input type="number" id="in_temp" value="25"></div>
+      <div class="input-group"><label>Hava Nemi (%)</label><input type="number" id="in_hum" value="60"></div>
+      <div class="input-group"><label>Işık (Lux)</label><input type="number" id="in_light" value="5000"></div>
+      <div class="input-group"><label>Toprak Nemi (%)</label><input type="number" id="in_soil" value="40"></div>
+    </div>
+    <button class="btn" onclick="sendInputs()">Tüm Değerleri Uygula</button>
+  </div>
+
+  <div class="section">
+    <h2>2. Giriş Üyelik Değerleri (Fuzzification)</h2>
+    <table id="membershipTable">
+      <thead>
+        <tr>
+          <th>Değişken</th><th>Çok Düşük</th><th>Düşük</th><th>Orta</th><th>Yüksek</th><th>Çok Yüksek</th>
+        </tr>
+      </thead>
+      <tbody>
+        </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2>3. Giriş Değerleri Durumu</h2>
+    <div class="grid-inputs" id="activeStates">
+       </div>
+  </div>
+
+  <div class="section">
+    <h2>4 & 5. Çıkış Değerleri ve Üyelikler</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Çıkış Birimi</th>
+          <th>Üyelik (0-1)</th>
+          <th>Hesaplanan Çıkış</th>
+          <th>Bulanık Etiket</th>
+        </tr>
+      </thead>
+      <tbody id="outputTable">
+        </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2>6 & 7. Kurallar ve İşlemler</h2>
+    <button class="btn btn-action" onclick="alert('Kurallar listeleniyor...')">Uygulanan Kuralları Göster</button>
+    <br><br>
+    <div id="actionButtons">
+      <button class="btn btn-action">Sistemi Başlat</button>
+      <button class="btn btn-action">Acil Durdurma</button>
+      <button class="btn btn-action">Rapor Al</button>
+    </div>
+  </div>
+  
+  <p style="text-align:center; font-size:0.8em; color:#777;">ESP32 Dashboard • <span id="uptime"></span></p>
+</div>
+
+<script>
+  // Definition of variable names for mapping
+  const inputNames = ["Sıcaklık", "Hava Nemi", "Işık Şiddeti", "Toprak Nemi"];
+  const outputNames = ["Isıtma", "Soğutma", "Gölgelendirme", "Sulama", "Işıklandırma"];
+  const outputUnits = ["kW", "Micron", "cm", "Lt", "Lux"];
+
+  // Fetch data every 1 second
+  setInterval(getData, 1000);
+
+  function getData() {
+    fetch('/data')
+      .then(response => response.json())
+      .then(data => {
+        updateMemberships(data.inputs_m);
+        updateActiveStates(data.inputs_active);
+        updateOutputs(data.outputs);
+        document.getElementById('uptime').innerText = "Uptime: " + data.uptime + "s";
+      });
+  }
+
+  function sendInputs() {
+    const params = new URLSearchParams();
+    params.append('temp', document.getElementById('in_temp').value);
+    params.append('hum', document.getElementById('in_hum').value);
+    params.append('light', document.getElementById('in_light').value);
+    params.append('soil', document.getElementById('in_soil').value);
+
+    fetch('/set?' + params.toString())
+      .then(res => res.text())
+      .then(text => alert(text));
+  }
+
+  function updateMemberships(matrix) {
+    let html = "";
+    for(let i=0; i<inputNames.length; i++) {
+      html += `<tr><td><b>${inputNames[i]}</b></td>`;
+      for(let j=0; j<5; j++) {
+        // Highlight logic could go here based on value
+        let val = matrix[i][j].toFixed(2);
+        let style = (val > 0.5) ? "background:#c8e6c9" : "";
+        html += `<td style="${style}">${val}</td>`;
+      }
+      html += "</tr>";
+    }
+    document.getElementById('membershipTable').querySelector('tbody').innerHTML = html;
+  }
+
+  function updateActiveStates(actives) {
+    let html = "";
+    for(let i=0; i<inputNames.length; i++) {
+      html += `<div class="input-group">
+                <label>${inputNames[i]}</label>
+                <span class="highlight">${actives[i].label}</span>
+                <br><small>Giriş: ${actives[i].val}</small>
+               </div>`;
+    }
+    document.getElementById('activeStates').innerHTML = html;
+  }
+
+  function updateOutputs(outputs) {
+    let html = "";
+    for(let i=0; i<outputNames.length; i++) {
+      html += `<tr>
+                <td>${outputNames[i]}</td>
+                <td>${outputs[i].membership.toFixed(2)}</td>
+                <td><b>${outputs[i].value.toFixed(1)} ${outputUnits[i]}</b></td>
+                <td>${outputs[i].label}</td>
+               </tr>`;
+    }
+    document.getElementById('outputTable').innerHTML = html;
+  }
+</script>
+
+</body>
+</html>
