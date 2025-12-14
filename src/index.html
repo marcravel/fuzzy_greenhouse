@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Greenhouse Fuzzy Controller</title>
+  <title>Akıllı Sera Fuzzy Kontrol Paneli</title>
   <style>
     body { font-family: Arial, sans-serif; background: #f4f4f9; margin: 0; padding: 20px; color: #333; }
     h1, h2, h3 { color: #2c3e50; }
@@ -130,15 +130,26 @@
       .then(text => alert(text));
   }
 
-  function updateMemberships(matrix) {
+function updateMemberships(matrix) {
     let html = "";
     for(let i=0; i<inputNames.length; i++) {
       html += `<tr><td><b>${inputNames[i]}</b></td>`;
+      
+      // 1. First, find the maximum value in this specific row
+      let maxVal = -1;
+      for(let k=0; k<5; k++) {
+        if(matrix[i][k] > maxVal) {
+           maxVal = matrix[i][k];
+        }
+      }
+
+      // 2. Now generate the cells, highlighting only the one(s) that match the max
       for(let j=0; j<5; j++) {
-        // Highlight logic could go here based on value
-        let val = matrix[i][j].toFixed(2);
-        let style = (val > 0.5) ? "background:#c8e6c9" : "";
-        html += `<td style="${style}">${val}</td>`;
+        let val = matrix[i][j];
+        // If this cell equals the row's maximum (and is > 0 to avoid highlighting empty rows), highlight it
+        let style = (val === maxVal && val > 0) ? "background:#c8e6c9; font-weight:bold;" : "";
+        
+        html += `<td style="${style}">${val.toFixed(2)}</td>`;
       }
       html += "</tr>";
     }

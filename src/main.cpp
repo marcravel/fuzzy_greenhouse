@@ -4,14 +4,15 @@
 
 // Import the separate HTML file
 #include "web_index.h"
+#include "fuzzy_functions.h"
 
-const char* ssid = "ESP32_Greenhouse";
+const char* ssid = "ESP32_Sera";
 const char* password = "12345678";
 
 WebServer server(80);
 
 // --- Data Models ---
-float rawInputs[4] = {25.0, 60.0, 5000.0, 45.0}; // 4 Inputs: Temp, Hum, Light, Soil, CO2, Wind
+float rawInputs[4] = {25.0, 60.0, 5000.0, 45.0}; // 4 Inputs: Temp, Hum, Light, Soil
 // 5 Linguistic terms per input
 float inputMemberships[4][5]; 
 // Labels: CD (Cok Dusuk), D (Dusuk), O (Orta), Y (Yuksek), CY (Cok Yuksek)
@@ -29,22 +30,35 @@ OutputData outputs[5]; // Heating, Cooling, Shading, Irrigation, Lighting
 
 // Determines fuzzy membership (Simulated Triangle MF)
 void calculateFuzzyMemberships() {
-  // Simulating membership values based on raw inputs
-  // In a real system, you would use a Fuzzy Library here.
-  // Here we just generate pseudo-realistic distributions.
-  
-  for (int i = 0; i < 4; i++) {
-    // Reset
-    for(int j=0; j<5; j++) inputMemberships[i][j] = 0.0;
+  // Use real fuzzification functions from fuzzy_functions.* to populate
+  // `inputMemberships` for each of the 4 inputs (Temp, Hum, Light, Soil).
+  FuzzyInput t = fuzzify_temperature_final(rawInputs[0]);
+  inputMemberships[0][0] = (float)t.cok_dusuk;
+  inputMemberships[0][1] = (float)t.dusuk;
+  inputMemberships[0][2] = (float)t.orta;
+  inputMemberships[0][3] = (float)t.yuksek;
+  inputMemberships[0][4] = (float)t.cok_yuksek;
 
-    // Simple simulation: Assign membership based on random noise + input magnitude
-    // This is just visual simulation code
-    int primaryTerm = random(0, 5); 
-    inputMemberships[i][primaryTerm] = (random(50, 100) / 100.0);
-    
-    // Normalize slightly (optional for visuals)
-    if(primaryTerm > 0) inputMemberships[i][primaryTerm-1] = 1.0 - inputMemberships[i][primaryTerm];
-  }
+  FuzzyInput h = fuzzify_huminidty_final(rawInputs[1]);
+  inputMemberships[1][0] = (float)h.cok_dusuk;
+  inputMemberships[1][1] = (float)h.dusuk;
+  inputMemberships[1][2] = (float)h.orta;
+  inputMemberships[1][3] = (float)h.yuksek;
+  inputMemberships[1][4] = (float)h.cok_yuksek;
+
+  FuzzyInput l = fuzzify_isik_final(rawInputs[2]);
+  inputMemberships[2][0] = (float)l.cok_dusuk;
+  inputMemberships[2][1] = (float)l.dusuk;
+  inputMemberships[2][2] = (float)l.orta;
+  inputMemberships[2][3] = (float)l.yuksek;
+  inputMemberships[2][4] = (float)l.cok_yuksek;
+
+  FuzzyInput s = fuzzify_topraknemi_final(rawInputs[3]);
+  inputMemberships[3][0] = (float)s.cok_dusuk;
+  inputMemberships[3][1] = (float)s.dusuk;
+  inputMemberships[3][2] = (float)s.orta;
+  inputMemberships[3][3] = (float)s.yuksek;
+  inputMemberships[3][4] = (float)s.cok_yuksek;
 }
 
 void calculateOutputs() {
@@ -79,7 +93,7 @@ void handleSetInputs() {
   calculateFuzzyMemberships();
   calculateOutputs();
 
-  server.send(200, "text/plain", "Degerler Guncellendi!");
+  // server.send(200, "text/plain", "Degerler Guncellendi!");
 }
 
 // API to send JSON data to dashboard (AJAX)
@@ -106,7 +120,11 @@ void handleData() {
     // Find highest membership term for display
     int bestTerm = 0; 
     float maxVal = -1;
-    for(int k=0; k<5; k++) { if(inputMemberships[i][k] > maxVal) { maxVal = inputMemberships[i][k]; bestTerm = k; } }
+    for(int k=0; k<5; k++) { 
+      if(inputMemberships[i][k] > maxVal) { 
+        maxVal = inputMemberships[i][k]; bestTerm = k; 
+      } 
+    }
     
     json += "{";
     json += "\"val\":" + String(rawInputs[i]) + ",";
