@@ -93,7 +93,7 @@ void handleSetInputs() {
   calculateFuzzyMemberships();
   calculateOutputs();
 
-  // server.send(200, "text/plain", "Degerler Guncellendi!");
+  server.send(200, "text/plain", "Degerler Guncellendi!");
 }
 
 // API to send JSON data to dashboard (AJAX)
@@ -101,7 +101,15 @@ void handleData() {
   // Construct JSON manually to avoid dependencies, though ArduinoJson is recommended.
   String json = "{";
   
-  // 1. Input Memberships (Matrix)
+  //1. Raw Inputs
+  json += "\"raw_inputs\":[";
+  for(int i=0; i<4; i++) {
+    json += String(rawInputs[i]);
+    if(i<3) json += ",";
+  }
+  json += "],";
+
+  // 2. Input Memberships (Matrix)
   json += "\"inputs_m\":[";
   for(int i=0; i<4; i++) {
     json += "[";
@@ -114,7 +122,7 @@ void handleData() {
   }
   json += "],";
 
-  // 2. Active Input States
+  // 3. Active Input States
   json += "\"inputs_active\":[";
   for(int i=0; i<4; i++) {
     // Find highest membership term for display
@@ -134,7 +142,7 @@ void handleData() {
   }
   json += "],";
 
-  // 3. Outputs
+  // 4. Outputs
   json += "\"outputs\":[";
   for(int i=0; i<5; i++) {
     json += "{";
@@ -150,6 +158,8 @@ void handleData() {
   json += "}";
 
   server.send(200, "application/json", json);
+
+  Serial.print(json + "\n");
 }
 
 void setup() {
@@ -174,7 +184,21 @@ void setup() {
 }
 
 void loop() {
-  server.handleClient();
   // In a real application, you would run the fuzzy logic processing here periodically
 
+  float currentMillis = millis();
+  static float lastUpdate = 0;
+  if (currentMillis - lastUpdate > 1000) { // Update every second
+    lastUpdate = currentMillis;
+    // For simulation, we can recalculate outputs every second
+    rawInputs[0] += random(-5,6) / 10.0f; // Simulate slight temp changes
+    rawInputs[1] += random(-5,6) / 10.0f; // Simulate slight hum changes
+    rawInputs[2] += random(-100,101);     // Simulate light changes
+    rawInputs[3] += random(-5,6) / 10.0f; // Simulate soil moisture changes
+
+    calculateFuzzyMemberships();
+    calculateOutputs();
+  }
+
+  server.handleClient();
 }

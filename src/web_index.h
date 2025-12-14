@@ -51,6 +51,7 @@ const char index_html[] PROGMEM = R"rawliteral(
       <div class="input-group"><label>Toprak Nemi (%)</label><input type="number" id="in_soil" value="40"></div>
     </div>
     <button class="btn" onclick="sendInputs()">Tüm Değerleri Uygula</button>
+    <button class="btn" style="margin-left:8px; background:#ff9800;" onclick="pullInputsNow()">Cihazdan Eşitle</button>
   </div>
 
   <div class="section">
@@ -119,7 +120,12 @@ const char index_html[] PROGMEM = R"rawliteral(
         updateActiveStates(data.inputs_active);
         updateOutputs(data.outputs);
         document.getElementById('uptime').innerText = "Uptime: " + data.uptime + "s";
-      });
+        // update numeric input fields from server-provided raw_inputs (if present)
+        if (data && Array.isArray(data.raw_inputs) && data.raw_inputs.length >= 4) {
+          pullInputs(data.raw_inputs);
+        }
+      })
+      .catch(err => console.warn('getData fetch error', err));
   }
 
   function sendInputs() {
@@ -132,6 +138,25 @@ const char index_html[] PROGMEM = R"rawliteral(
     fetch('/set?' + params.toString())
       .then(res => res.text())
       .then(text => alert(text));
+  }
+
+  // Pull current `rawInputs` from the device and populate the dashboard inputs
+  function pullInputs(raw_inputs) {
+    if (!raw_inputs || raw_inputs.length < 4) return;
+    document.getElementById('in_temp').value = raw_inputs[0];
+    document.getElementById('in_hum').value  = raw_inputs[1];
+    document.getElementById('in_light').value = raw_inputs[2];
+    document.getElementById('in_soil').value = raw_inputs[3];
+  }
+
+  // Manual fetch + apply (used by the button)
+  function pullInputsNow() {
+    fetch('/data')
+      .then(response => response.json())
+      .then(d => {
+        if (d && Array.isArray(d.raw_inputs)) pullInputs(d.raw_inputs);
+      })
+      .catch(err => console.warn('pullInputsNow error', err));
   }
 
 function updateMemberships(matrix) {
