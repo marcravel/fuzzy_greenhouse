@@ -1,74 +1,62 @@
 #include "fuzzy_functions.h"
 #include <math.h>
 
-double min(double a, double b) {
+float min(float a, float b) {
     return (a < b) ? a : b;
 }
-double max(double a, double b) {
+float max(float a, float b) {
     return (a > b) ? a : b;
 }
 
-double trapmf2yukselen(double x, double a, double b, double c, double d) {
-    double mu_yukselen=0; ;
-    if (b<=x&&x<=c)
-    {
-      mu_yukselen=1;
+float trapmf2yukselen(float x, float a, float b, float c, float d) {
+    float mu_yukselen = 0.0f;
+    if (b <= x && x <= c) {
+        mu_yukselen = 1.0f;
+    } else {
+        mu_yukselen = (x - a) / (b - a);
     }
-    else mu_yukselen=(x-a)/(b-a);
-    if (mu_yukselen<0)
-    {
-       mu_yukselen=0;
-    }
-    if (mu_yukselen>1)
-    {
-        mu_yukselen=1;
-    }
+    if (mu_yukselen < 0.0f) mu_yukselen = 0.0f;
+    if (mu_yukselen > 1.0f) mu_yukselen = 1.0f;
     return mu_yukselen;
 }
 
-double trapmf2dusen(double x, double a, double b, double c, double d) {
-    double mu_dusen =0;
-    if (a<=x && x<=c)  
-    {
-         mu_dusen=1;
+float trapmf2dusen(float x, float a, float b, float c, float d) {
+    float mu_dusen = 0.0f;
+    if (a <= x && x <= c) {
+        mu_dusen = 1.0f;
+    } else {
+        mu_dusen = (d - x) / (d - c);
     }
-     else mu_dusen=(d-x)/(d-c);
-     if (mu_dusen<0)
-    {
-       mu_dusen=0;
-    }
-     if (mu_dusen>1)
-    {
-        mu_dusen=1;
-    }
+    if (mu_dusen < 0.0f) mu_dusen = 0.0f;
+    if (mu_dusen > 1.0f) mu_dusen = 1.0f;
     return mu_dusen;
 }
 
-double trimf(double x, double a, double b, double c) {
-    double mu;
+float trimf(float x, float a, float b, float c) {
+    float mu;
     if (x <= a || x >= c) {
-        mu = 0.0;
+        mu = 0.0f;
     } else if (x >= a && x <= b) {
-        mu = (x - a) / (b - a); 
+        mu = (x - a) / (b - a);
     } else if (x >= b && x <= c) {
-        mu = (c - x) / (c - b); 
+        mu = (c - x) / (c - b);
     } else {
-        mu = 0.0;
+        mu = 0.0f;
     }
-    return max(0.0, min(1.0, mu));
+    return max(0.0f, min(1.0f, mu));
 }
 
-FuzzyInput fuzzify_temperature_final(double temp) {
+FuzzyInput fuzzify_temperature_final(float temp) {
     FuzzyInput temp_mu;
-    temp_mu.cok_dusuk  = trapmf2dusen(temp, -10.0, -10.0, 0.0, 10.0);
-    temp_mu.dusuk      = trimf(temp, 0.0, 7.5, 15.0);
-    temp_mu.orta       = trimf(temp, 14.0, 20.0, 26.0);
-    temp_mu.yuksek     = trimf(temp, 20.0, 30.0, 40.0);
-    temp_mu.cok_yuksek = trapmf2yukselen(temp, 30.0, 40.0, 50.0, 50.0);
+    temp_mu.cok_dusuk  = trapmf2dusen(temp, -10.0f, -10.0f, 0.0f, 10.0f);
+    temp_mu.dusuk      = trimf(temp, 0.0f, 7.5f, 15.0f);
+    temp_mu.orta       = trimf(temp, 14.0f, 20.0f, 26.0f);
+    temp_mu.yuksek     = trimf(temp, 20.0f, 30.0f, 40.0f);
+    temp_mu.cok_yuksek = trapmf2yukselen(temp, 30.0f, 40.0f, 50.0f, 50.0f);
     return temp_mu;
 }
 
-void print_fuzzification_results(double temp) {
+void print_fuzzification_results(float temp) {
     FuzzyInput fi = fuzzify_temperature_final(temp);
     printf(">>> SICAKLIK BULANIKLAŞTIRMA (Giriş: %.1f°C) <<<\n", temp);
     printf("1. ÇOK DÜŞÜK (mu_ÇD):  %.4f\n", fi.cok_dusuk);
@@ -79,17 +67,17 @@ void print_fuzzification_results(double temp) {
     printf("---------------------------------------------------\n");
 }
 
-FuzzyInput fuzzify_huminidty_final(double humin) {
+FuzzyInput fuzzify_huminidty_final(float humin) {
     FuzzyInput nem_mu;
-    nem_mu.cok_dusuk  = trapmf2dusen(humin, 0.0, 0.0, 20.0, 40.0);
-    nem_mu.dusuk      = trimf(humin, 20.0, 39.5, 59.0);
-    nem_mu.orta       = trimf(humin, 50.0, 60.0, 70.0);
-    nem_mu.yuksek     = trimf(humin, 60.0, 75.0, 90.0);
-    nem_mu.cok_yuksek = trapmf2yukselen(humin, 80.0, 90.0, 100.0, 100.0);
+    nem_mu.cok_dusuk  = trapmf2dusen(humin, 0.0f, 0.0f, 20.0f, 40.0f);
+    nem_mu.dusuk      = trimf(humin, 20.0f, 39.5f, 59.0f);
+    nem_mu.orta       = trimf(humin, 50.0f, 60.0f, 70.0f);
+    nem_mu.yuksek     = trimf(humin, 60.0f, 75.0f, 90.0f);
+    nem_mu.cok_yuksek = trapmf2yukselen(humin, 80.0f, 90.0f, 100.0f, 100.0f);
     return nem_mu;
 }
 
-void print_fuzzification_results2(double humin) {
+void print_fuzzification_results2(float humin) {
     FuzzyInput nem = fuzzify_huminidty_final(humin);
     printf(">>> HAVA NEMİ BULANIKLAŞTIRMA (Giriş: %.1fnem) <<<\n", humin);
     printf("1. ÇOK DÜŞÜK (mu_ÇD):  %.4f\n", nem.cok_dusuk);
@@ -100,17 +88,17 @@ void print_fuzzification_results2(double humin) {
     printf("---------------------------------------------------\n");
 }
 
-FuzzyInput fuzzify_isik_final(double isiksiddeti) {
+FuzzyInput fuzzify_isik_final(float isiksiddeti) {
     FuzzyInput isik_mu;
-    isik_mu.cok_dusuk  = trapmf2dusen(isiksiddeti, 0.0, 0.0, 2500.0, 5000.0);
-    isik_mu.dusuk      = trimf(isiksiddeti, 4000.0, 6500.0, 9000.0);
-    isik_mu.orta       = trimf(isiksiddeti, 8000.0, 10000.0, 12000.0);
-    isik_mu.yuksek     = trimf(isiksiddeti, 11000.0, 13500.0, 16000.0);
-    isik_mu.cok_yuksek = trapmf2yukselen(isiksiddeti, 15000.0, 17500.0, 20000.0, 20000.0);
+    isik_mu.cok_dusuk  = trapmf2dusen(isiksiddeti, 0.0f, 0.0f, 2500.0f, 5000.0f);
+    isik_mu.dusuk      = trimf(isiksiddeti, 4000.0f, 6500.0f, 9000.0f);
+    isik_mu.orta       = trimf(isiksiddeti, 8000.0f, 10000.0f, 12000.0f);
+    isik_mu.yuksek     = trimf(isiksiddeti, 11000.0f, 13500.0f, 16000.0f);
+    isik_mu.cok_yuksek = trapmf2yukselen(isiksiddeti, 15000.0f, 17500.0f, 20000.0f, 20000.0f);
     return isik_mu;
 }
 
-void print_fuzzification_results3(double isiksiddeti) {
+void print_fuzzification_results3(float isiksiddeti) {
     FuzzyInput isik = fuzzify_isik_final(isiksiddeti);
     printf(">>> IŞIK ŞİDDETİ BULANIKLAŞTIRMA (Giriş: %.1fişikşiddeti) <<<\n", isiksiddeti);
     printf("1. ÇOK DÜŞÜK (mu_ÇD):  %f\n", isik.cok_dusuk);
@@ -121,13 +109,13 @@ void print_fuzzification_results3(double isiksiddeti) {
     printf("---------------------------------------------------\n");
 }
 
-FuzzyInput fuzzify_topraknemi_final(double topraknemi) {
+FuzzyInput fuzzify_topraknemi_final(float topraknemi) {
     FuzzyInput topnemi_mu;
-    topnemi_mu.cok_dusuk  = trapmf2dusen(topraknemi, 0.0, 0.0, 20.0, 40.0);
-    topnemi_mu.dusuk      = trimf(topraknemi, 30.0, 49.5, 69.0);
-    topnemi_mu.orta       = trimf(topraknemi, 60.0, 69.5, 79.0);
-    topnemi_mu.yuksek     = trimf(topraknemi, 70.0, 80.0, 90.0);
-    topnemi_mu.cok_yuksek = trapmf2yukselen(topraknemi, 80.0, 90.0, 100.0, 100.0);
+    topnemi_mu.cok_dusuk  = trapmf2dusen(topraknemi, 0.0f, 0.0f, 20.0f, 40.0f);
+    topnemi_mu.dusuk      = trimf(topraknemi, 30.0f, 49.5f, 69.0f);
+    topnemi_mu.orta       = trimf(topraknemi, 60.0f, 69.5f, 79.0f);
+    topnemi_mu.yuksek     = trimf(topraknemi, 70.0f, 80.0f, 90.0f);
+    topnemi_mu.cok_yuksek = trapmf2yukselen(topraknemi, 80.0f, 90.0f, 100.0f, 100.0f);
     return topnemi_mu;
 }
 

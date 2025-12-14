@@ -12,7 +12,7 @@ const char* password = "12345678";
 WebServer server(80);
 
 // --- Data Models ---
-float rawInputs[4] = {25.0, 60.0, 5000.0, 45.0}; // 4 Inputs: Temp, Hum, Light, Soil
+float rawInputs[4] = {25.0f, 60.0f, 5000.0f, 45.0f}; // 4 Inputs: Temp, Hum, Light, Soil
 // 5 Linguistic terms per input
 float inputMemberships[4][5]; 
 // Labels: CD (Cok Dusuk), D (Dusuk), O (Orta), Y (Yuksek), CY (Cok Yuksek)
@@ -64,7 +64,7 @@ void calculateFuzzyMemberships() {
 void calculateOutputs() {
   // Simulate Output calculations
   for (int i = 0; i < 5; i++) {
-    outputs[i].membership = random(10, 100) / 100.0;
+    outputs[i].membership = random(10, 100) / 100.0f;
     outputs[i].label = terms[random(0, 5)];
     
     // Assign varying ranges for crisp values
@@ -176,4 +176,5 @@ void setup() {
 void loop() {
   server.handleClient();
   // In a real application, you would run the fuzzy logic processing here periodically
+
 }

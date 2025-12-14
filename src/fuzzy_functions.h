@@ -8,31 +8,31 @@ extern "C" {
 #include <stdio.h>
 
 typedef struct {
-	double cok_dusuk;
-	double dusuk;
-	double orta;
-	double yuksek;
-	double cok_yuksek;
+    float cok_dusuk;
+    float dusuk;
+    float orta;
+    float yuksek;
+    float cok_yuksek;
 } FuzzyInput;
 
-double min(double a, double b);
-double max(double a, double b);
+float min(float a, float b);
+float max(float a, float b);
 
-double trapmf2yukselen(double x, double a, double b, double c, double d);
-double trapmf2dusen(double x, double a, double b, double c, double d);
-double trimf(double x, double a, double b, double c);
+float trapmf2yukselen(float x, float a, float b, float c, float d);
+float trapmf2dusen(float x, float a, float b, float c, float d);
+float trimf(float x, float a, float b, float c);
 
-FuzzyInput fuzzify_temperature_final(double temp);
-void print_fuzzification_results(double temp);
+FuzzyInput fuzzify_temperature_final(float temp);
+void print_fuzzification_results(float temp);
 
-FuzzyInput fuzzify_huminidty_final(double humin);
-void print_fuzzification_results2(double humin);
+FuzzyInput fuzzify_huminidty_final(float humin);
+void print_fuzzification_results2(float humin);
 
-FuzzyInput fuzzify_isik_final(double isiksiddeti);
-void print_fuzzification_results3(double isiksiddeti);
+FuzzyInput fuzzify_isik_final(float isiksiddeti);
+void print_fuzzification_results3(float isiksiddeti);
 
-FuzzyInput fuzzify_topraknemi_final(double topraknemi);
-void print_fuzzification_results4(double topraknemi);
+FuzzyInput fuzzify_topraknemi_final(float topraknemi);
+void print_fuzzification_results4(float topraknemi);
 
 #ifdef __cplusplus
 }
