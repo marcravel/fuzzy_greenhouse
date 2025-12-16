@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <WiFi.h>
 #include <WebServer.h>
+#include "sensors.h"
 
 // Import the separate HTML file
 #include "web_index.h"
@@ -158,12 +159,12 @@ void handleData() {
   json += "}";
 
   server.send(200, "application/json", json);
-
-  Serial.print(json + "\n");
 }
 
 void setup() {
   Serial.begin(115200);
+
+  dht.begin();
 
   // Initial Calculation
   calculateFuzzyMemberships();
@@ -188,11 +189,15 @@ void loop() {
 
   float currentMillis = millis();
   static float lastUpdate = 0;
+
+  float temperature = dht.readTemperature();
+  float humidity = dht.readHumidity();
+
   if (currentMillis - lastUpdate > 1000) { // Update every second
     lastUpdate = currentMillis;
     // For simulation, we can recalculate outputs every second
-    rawInputs[0] += random(-5,6) / 10.0f; // Simulate slight temp changes
-    rawInputs[1] += random(-5,6) / 10.0f; // Simulate slight hum changes
+    rawInputs[0] = temperature; // Simulate slight temp changes
+    rawInputs[1] = humidity; // Simulate slight hum changes
     rawInputs[2] += random(-100,101);     // Simulate light changes
     rawInputs[3] += random(-5,6) / 10.0f; // Simulate soil moisture changes
 
