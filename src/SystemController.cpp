@@ -23,7 +23,7 @@ void SystemController::update() {
     }
 
     // Periodic Update (e.g., every 1 second)
-    if (now - lastLogicUpdate > 10000) {
+    if (now - lastLogicUpdate > 2000) {
         lastLogicUpdate = now;
         
         // Read actual sensors (with simulation for missing ones)
@@ -49,6 +49,7 @@ void SystemController::processLogic() {
     Serial.println("-----");
 
     // 2. Output Rules (Currently Random/Simulated as per original code)
+    currentDecisions = fuzzy.evaluateRules(currentFuzzyState);
     generateOutputs();
     
     // 3. Update Web Server State
@@ -59,18 +60,14 @@ void SystemController::processLogic() {
 }
 
 void SystemController::generateOutputs() {
-    // Ported from original calculateOutputs logic
-    // This seems to be a simulation of decision making
-    String terms[] = {"Cok Dusuk", "Dusuk", "Orta", "Yuksek", "Cok Yuksek"};
-    
     for (int i = 0; i < 5; i++) {
-        currentOutputs.outputs[i].membership = random(10, 100) / 100.0f;
-        currentOutputs.outputs[i].label = terms[random(0, 5)];
-        
-        if (i == 0) currentOutputs.outputs[i].value = random(0, 1000) / 100.0; 
-        else if (i == 1) currentOutputs.outputs[i].value = random(0, 500) / 100.0;
-        else if (i == 2) currentOutputs.outputs[i].value = random(0, 100);
-        else if (i == 3) currentOutputs.outputs[i].value = random(0, 100);
-        else if (i == 4) currentOutputs.outputs[i].value = random(1000, 20000);
+        currentOutputs.outputs[i].membership = 0.0;
+        currentOutputs.outputs[i].value = 0.0;
     }
+
+    currentOutputs.outputs[0].label = currentDecisions.heating;
+    currentOutputs.outputs[1].label = currentDecisions.cooling;
+    currentOutputs.outputs[2].label = currentDecisions.shadow;
+    currentOutputs.outputs[3].label = currentDecisions.water;
+    currentOutputs.outputs[4].label = currentDecisions.lighting;
 }

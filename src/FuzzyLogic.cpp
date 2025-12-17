@@ -141,3 +141,183 @@ void FuzzyLogic::printResults(const SensorReadings& inputs, const SystemFuzzySta
     printSingleResult("ISIK", inputs.lightLevel, state.light_mu);
     printSingleResult("TOPRAK NEMI", inputs.soilMoisture, state.soil_mu);
 }
+
+SicaklikEtiket FuzzyLogic::string_to_enum_sicaklik(String etiket)
+{
+    if (etiket == "cok_dusuk")    return SICAKLIK_LABEL_COK_DUSUK;
+    if (etiket == "dusuk")        return SICAKLIK_LABEL_DUSUK;
+    if (etiket == "orta")         return SICAKLIK_LABEL_ORTA;
+    if (etiket == "yuksek")       return SICAKLIK_LABEL_YUKSEK;
+    if (etiket == "cok_yuksek")   return SICAKLIK_LABEL_COK_YUKSEK;
+    
+    return (SicaklikEtiket)-1; // Cast to enum type to avoid warnings
+}
+
+NemEtiket FuzzyLogic::string_to_enum_nem(String etiket)
+{
+    if (etiket == "cok_dusuk")    return NEM_LABEL_COK_DUSUK;
+    if (etiket == "dusuk")        return NEM_LABEL_DUSUK;
+    if (etiket == "orta")         return NEM_LABEL_ORTA;
+    if (etiket == "yuksek")       return NEM_LABEL_YUKSEK;
+    if (etiket == "cok_yuksek")   return NEM_LABEL_COK_YUKSEK;
+
+    return (NemEtiket)-1; // Cast to enum type to avoid warnings
+}
+
+IsikEtiket FuzzyLogic::string_to_enum_isik(String etiket)
+{
+    if (etiket == "cok_dusuk")    return ISIK_LABEL_COK_DUSUK;
+    if (etiket == "dusuk")        return ISIK_LABEL_DUSUK;
+    if (etiket == "orta")         return ISIK_LABEL_ORTA;
+    if (etiket == "yuksek")       return ISIK_LABEL_YUKSEK;
+    if (etiket == "cok_yuksek")   return ISIK_LABEL_COK_YUKSEK;
+    return (IsikEtiket)-1;
+}
+
+NemToprakEtiket FuzzyLogic::string_to_enum_toprak(String etiket)
+{
+    if (etiket == "cok_dusuk")    return NEMTOPRAK_LABEL_COK_DUSUK;
+    if (etiket == "dusuk")        return NEMTOPRAK_LABEL_DUSUK;
+    if (etiket == "orta")         return NEMTOPRAK_LABEL_ORTA;
+    if (etiket == "yuksek")       return NEMTOPRAK_LABEL_YUKSEK;
+    if (etiket == "cok_yuksek")   return NEMTOPRAK_LABEL_COK_YUKSEK;
+    return (NemToprakEtiket)-1;
+}
+
+SystemDecisions FuzzyLogic::evaluateRules(const SystemFuzzyState& state) {
+    SystemDecisions decisions;
+    
+    // --- Parse Inputs ---
+    SicaklikEtiket temp = string_to_enum_sicaklik(state.temp_mu.sozel_ifade);
+    NemEtiket hum = string_to_enum_nem(state.hum_mu.sozel_ifade);
+    IsikEtiket light = string_to_enum_isik(state.light_mu.sozel_ifade);
+    NemToprakEtiket soil = string_to_enum_toprak(state.soil_mu.sozel_ifade);
+
+    // --- RULE 1: Heating (Cikis) ---
+    // Inputs: Temp, Hum
+    if (temp != -1 && hum != -1) {
+        switch (temp) {
+            case SICAKLIK_LABEL_COK_DUSUK:
+                if (hum == NEM_LABEL_COK_DUSUK || hum == NEM_LABEL_DUSUK) decisions.heating = "cok_yuksek";
+                else if (hum == NEM_LABEL_ORTA || hum == NEM_LABEL_YUKSEK || hum == NEM_LABEL_COK_YUKSEK) decisions.heating = "yuksek";
+                break;
+            case SICAKLIK_LABEL_DUSUK:
+                if (hum == NEM_LABEL_COK_DUSUK || hum == NEM_LABEL_DUSUK || hum == NEM_LABEL_ORTA) decisions.heating = "yuksek";
+                else if (hum == NEM_LABEL_YUKSEK || hum == NEM_LABEL_COK_YUKSEK) decisions.heating = "orta";
+                break;
+            case SICAKLIK_LABEL_ORTA:
+                if (hum == NEM_LABEL_COK_DUSUK || hum == NEM_LABEL_DUSUK || hum == NEM_LABEL_ORTA || hum == NEM_LABEL_YUKSEK) decisions.heating = "orta";
+                else if (hum == NEM_LABEL_COK_YUKSEK) decisions.heating = "dusuk";
+                break;
+            case SICAKLIK_LABEL_YUKSEK:
+                decisions.heating = "dusuk"; 
+                break;
+            case SICAKLIK_LABEL_COK_YUKSEK:
+                decisions.heating = "cok_dusuk";
+                break;
+        }
+    }
+
+    // --- RULE 2: Cooling ---
+    // Inputs: Temp, Hum
+    if (temp != -1 && hum != -1) {
+        switch (temp) {
+            case SICAKLIK_LABEL_COK_DUSUK:
+                decisions.cooling = "cok_dusuk";
+                break;
+            case SICAKLIK_LABEL_DUSUK:
+                decisions.cooling = "dusuk";
+                break;
+            case SICAKLIK_LABEL_ORTA:
+                if (hum == NEM_LABEL_COK_DUSUK) decisions.cooling = "dusuk";
+                else decisions.cooling = "orta";
+                break;
+            case SICAKLIK_LABEL_YUKSEK:
+                if (hum == NEM_LABEL_COK_DUSUK || hum == NEM_LABEL_DUSUK) decisions.cooling = "orta";
+                else decisions.cooling = "yuksek";
+                break;
+            case SICAKLIK_LABEL_COK_YUKSEK:
+                if (hum == NEM_LABEL_YUKSEK || hum == NEM_LABEL_COK_YUKSEK) decisions.cooling = "cok_yuksek";
+                else decisions.cooling = "yuksek";
+                break;
+        }
+    }
+    
+    // --- RULE 3: Shadow (Golgeleme) ---
+    // Inputs: Temp, Light
+    if (temp != -1 && light != -1) {
+        switch (temp) {
+             case SICAKLIK_LABEL_COK_DUSUK:
+                if (light == ISIK_LABEL_COK_DUSUK || light == ISIK_LABEL_DUSUK) decisions.shadow = "cok_dusuk";
+                else if (light == ISIK_LABEL_ORTA) decisions.shadow = "dusuk";
+                else decisions.shadow = "orta";
+                break;
+             case SICAKLIK_LABEL_DUSUK:
+                if (light == ISIK_LABEL_COK_DUSUK) decisions.shadow = "cok_dusuk";
+                else if (light == ISIK_LABEL_DUSUK || light == ISIK_LABEL_ORTA) decisions.shadow = "dusuk";
+                else if (light == ISIK_LABEL_YUKSEK) decisions.shadow = "orta";
+                else decisions.shadow = "yuksek";
+                break;
+             case SICAKLIK_LABEL_ORTA:
+                if (light == ISIK_LABEL_COK_DUSUK) decisions.shadow = "cok_dusuk";
+                else if (light == ISIK_LABEL_DUSUK) decisions.shadow = "dusuk";
+                else if (light == ISIK_LABEL_ORTA || light == ISIK_LABEL_YUKSEK) decisions.shadow = "orta";
+                else decisions.shadow = "yuksek";
+                break;
+             case SICAKLIK_LABEL_YUKSEK:
+                if (light == ISIK_LABEL_COK_DUSUK || light == ISIK_LABEL_DUSUK) decisions.shadow = "dusuk";
+                else if (light == ISIK_LABEL_ORTA) decisions.shadow = "orta";
+                else decisions.shadow = "yuksek";
+                break;
+             case SICAKLIK_LABEL_COK_YUKSEK:
+                if (light == ISIK_LABEL_COK_DUSUK) decisions.shadow = "dusuk";
+                else if (light == ISIK_LABEL_DUSUK || light == ISIK_LABEL_ORTA) decisions.shadow = "orta";
+                else if (light == ISIK_LABEL_YUKSEK) decisions.shadow = "yuksek";
+                else decisions.shadow = "cok_yuksek";
+                break;
+        }
+    }
+
+    // --- RULE 4: Water (Sulama) ---
+    // Inputs: Hum, Soil
+    if (hum != -1 && soil != -1) {
+        switch (hum) {
+            case NEM_LABEL_COK_DUSUK:
+                if (soil == NEMTOPRAK_LABEL_COK_DUSUK || soil == NEMTOPRAK_LABEL_DUSUK) decisions.water = "cok_yuksek";
+                else if (soil == NEMTOPRAK_LABEL_ORTA || soil == NEMTOPRAK_LABEL_YUKSEK) decisions.water = "yuksek";
+                else decisions.water = "orta";
+                break;
+            case NEM_LABEL_DUSUK:
+                if (soil == NEMTOPRAK_LABEL_COK_DUSUK || soil == NEMTOPRAK_LABEL_DUSUK || soil == NEMTOPRAK_LABEL_ORTA) decisions.water = "yuksek";
+                else decisions.water = "orta";
+                break;
+            case NEM_LABEL_ORTA:
+                if (soil == NEMTOPRAK_LABEL_COK_DUSUK) decisions.water = "yuksek";
+                else if (soil == NEMTOPRAK_LABEL_COK_YUKSEK) decisions.water = "dusuk";
+                else decisions.water = "orta";
+                break;
+            case NEM_LABEL_YUKSEK:
+                if (soil == NEMTOPRAK_LABEL_COK_DUSUK || soil == NEMTOPRAK_LABEL_DUSUK) decisions.water = "orta";
+                else decisions.water = "dusuk";
+                break;
+            case NEM_LABEL_COK_YUKSEK:
+                if (soil == NEMTOPRAK_LABEL_COK_DUSUK || soil == NEMTOPRAK_LABEL_DUSUK || soil == NEMTOPRAK_LABEL_ORTA) decisions.water = "dusuk";
+                else decisions.water = "cok_dusuk";
+                break;
+        }
+    }
+    
+    // --- RULE 5: Lighting (Aydinlatma) ---
+    // Inputs: Light
+    if (light != -1) {
+        switch (light) {
+            case ISIK_LABEL_COK_DUSUK: decisions.lighting = "cok_yuksek"; break;
+            case ISIK_LABEL_DUSUK:     decisions.lighting = "yuksek"; break;
+            case ISIK_LABEL_ORTA:      decisions.lighting = "orta"; break;
+            case ISIK_LABEL_YUKSEK:    decisions.lighting = "dusuk"; break;
+            case ISIK_LABEL_COK_YUKSEK:decisions.lighting = "cok_dusuk"; break;
+        }
+    }
+    
+    return decisions;
+}

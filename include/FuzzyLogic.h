@@ -3,12 +3,21 @@
 
 #include "SystemState.h"
 
+struct SystemDecisions {
+    String heating;  // Sicaklik kurali cikisi (cikis)
+    String cooling;  // Sogutma kurali cikisi (Cooling)
+    String shadow;   // Golgeleme kurali cikisi (shadow)
+    String water;    // Sulama kurali cikisi (water)
+    String lighting; // Aydinlatma kurali cikisi (lighting)
+};
+
 class FuzzyLogic {
 public:
     FuzzyLogic();
     
     // Main processing function
     SystemFuzzyState calculateMemberships(const SensorReadings& sensors);
+    SystemDecisions evaluateRules(const SystemFuzzyState& state);
     
     // Helpers for debugging/printing
     void printResults(const SensorReadings& inputs, const SystemFuzzyState& state);
@@ -25,6 +34,11 @@ private:
     FuzzyMembership fuzzifyHumidity(float hum);
     FuzzyMembership fuzzifyLight(float light);
     FuzzyMembership fuzzifySoilMoisture(float soil);
+
+    SicaklikEtiket string_to_enum_sicaklik(String etiket);
+    NemEtiket string_to_enum_nem(String etiket);
+    IsikEtiket string_to_enum_isik(String etiket);
+    NemToprakEtiket string_to_enum_toprak(String etiket);
     
     // Helper to print single membership
     void printSingleResult(const char* title, float inputVal, const FuzzyMembership& mem);

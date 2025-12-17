@@ -19,6 +19,7 @@ private:
     // Simulation/Cache state
     SensorReadings currentReadings;
     SystemFuzzyState currentFuzzyState;
+    SystemDecisions currentDecisions;
     SystemOutputs currentOutputs;
     
     unsigned long lastLogicUpdate;
