@@ -4,24 +4,26 @@ SensorManager::SensorManager()
     : dht(DHTPIN, DHTTYPE), currentTemp(25.0), currentHum(60.0), currentLight(5000.0), currentSoil(45.0), lastUpdate(0) {}
 
 void SensorManager::begin() {
-    dht.begin();
+    // dht.begin();
     // Initial read to populate values
-    readAll(false);
+    readAll(true);
 }
 
 SensorReadings SensorManager::readAll(bool simulateUpdates) {
     SensorReadings readings;
     
     // 1. Read Physical Sensors (DHT)
-    float t = dht.readTemperature();
-    float h = dht.readHumidity();
+    // float t = dht.readTemperature();
+    // float h = dht.readHumidity();
 
-    if (!isnan(t)) currentTemp = t;
-    if (!isnan(h)) currentHum = h;
+    // if (!isnan(t)) currentTemp = t;
+    // if (!isnan(h)) currentHum = h;
 
     // 2. Simulate other sensors (Light & Soil) if requested
     // Logic taken from original server_module.cpp loop
     if (simulateUpdates) {
+        currentTemp += random(-10, 11) / 10.0f; // Fluctuate temp
+        currentHum += random(-10, 11) / 10.0f; // Fluctuate hum
         currentLight += random(-100, 101); // Fluctuate light
         currentSoil += random(-5, 6) / 10.0f; // Fluctuate soil
         

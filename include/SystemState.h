@@ -18,6 +18,7 @@ struct FuzzyMembership {
     float orta;       // Medium
     float yuksek;     // High
     float cok_yuksek; // Very High
+    String sozel_ifade; // En iyi terim
 };
 
 // Container for all fuzzy results

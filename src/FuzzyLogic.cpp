@@ -47,6 +47,27 @@ float FuzzyLogic::trimf(float x, float a, float b, float c) {
 }
 
 // --- Fuzzification Logic ---
+String FuzzyLogic::getBestLabel(float cok_dusuk, float dusuk, float orta, float yuksek, float cok_yuksek) {
+    float max = cok_dusuk;
+    String label = "cok_dusuk";
+    if (dusuk > max) {
+        max = dusuk;
+        label = "dusuk";
+    }
+    if (orta > max) {
+        max = orta;
+        label = "orta";
+    }
+    if (yuksek > max) {
+        max = yuksek;
+        label = "yuksek";
+    }
+    if (cok_yuksek > max) {
+        max = cok_yuksek;
+        label = "cok_yuksek";
+    }
+    return label;
+}
 
 FuzzyMembership FuzzyLogic::fuzzifyTemperature(float temp) {
     FuzzyMembership mu;
@@ -55,6 +76,7 @@ FuzzyMembership FuzzyLogic::fuzzifyTemperature(float temp) {
     mu.orta       = trimf(temp, 14.0f, 20.0f, 26.0f);
     mu.yuksek     = trimf(temp, 20.0f, 30.0f, 40.0f);
     mu.cok_yuksek = trapmf_yukselen(temp, 30.0f, 40.0f, 50.0f, 50.0f);
+    mu.sozel_ifade = getBestLabel(mu.cok_dusuk, mu.dusuk, mu.orta, mu.yuksek, mu.cok_yuksek);
     return mu;
 }
 
@@ -65,6 +87,7 @@ FuzzyMembership FuzzyLogic::fuzzifyHumidity(float hum) {
     mu.orta       = trimf(hum, 50.0f, 60.0f, 70.0f);
     mu.yuksek     = trimf(hum, 60.0f, 75.0f, 90.0f);
     mu.cok_yuksek = trapmf_yukselen(hum, 80.0f, 90.0f, 100.0f, 100.0f);
+    mu.sozel_ifade = getBestLabel(mu.cok_dusuk, mu.dusuk, mu.orta, mu.yuksek, mu.cok_yuksek);
     return mu;
 }
 
@@ -75,6 +98,7 @@ FuzzyMembership FuzzyLogic::fuzzifyLight(float light) {
     mu.orta       = trimf(light, 8000.0f, 10000.0f, 12000.0f);
     mu.yuksek     = trimf(light, 11000.0f, 13500.0f, 16000.0f);
     mu.cok_yuksek = trapmf_yukselen(light, 15000.0f, 17500.0f, 20000.0f, 20000.0f);
+    mu.sozel_ifade = getBestLabel(mu.cok_dusuk, mu.dusuk, mu.orta, mu.yuksek, mu.cok_yuksek);
     return mu;
 }
 
@@ -85,6 +109,7 @@ FuzzyMembership FuzzyLogic::fuzzifySoilMoisture(float soil) {
     mu.orta       = trimf(soil, 60.0f, 69.5f, 79.0f);
     mu.yuksek     = trimf(soil, 70.0f, 80.0f, 90.0f);
     mu.cok_yuksek = trapmf_yukselen(soil, 80.0f, 90.0f, 100.0f, 100.0f);
+    mu.sozel_ifade = getBestLabel(mu.cok_dusuk, mu.dusuk, mu.orta, mu.yuksek, mu.cok_yuksek);
     return mu;
 }
 
@@ -106,6 +131,7 @@ void FuzzyLogic::printSingleResult(const char* title, float inputVal, const Fuzz
     printf("3. ORTA:       %.4f\n", mem.orta);
     printf("4. YUKSEK:     %.4f\n", mem.yuksek);
     printf("5. COK YUKSEK: %.4f\n", mem.cok_yuksek);
+    printf("Best term:     %s\n", mem.sozel_ifade);
     printf("---------------------------------------------------\n");
 }
 

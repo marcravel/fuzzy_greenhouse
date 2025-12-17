@@ -23,7 +23,7 @@ void SystemController::update() {
     }
 
     // Periodic Update (e.g., every 1 second)
-    if (now - lastLogicUpdate > 1000) {
+    if (now - lastLogicUpdate > 10000) {
         lastLogicUpdate = now;
         
         // Read actual sensors (with simulation for missing ones)
@@ -42,7 +42,11 @@ void SystemController::update() {
 void SystemController::processLogic() {
     // 1. Fuzzify
     currentFuzzyState = fuzzy.calculateMemberships(currentReadings);
-    
+    Serial.println("temp: " + currentFuzzyState.temp_mu.sozel_ifade); // Example usage
+    Serial.println("hum: " + currentFuzzyState.hum_mu.sozel_ifade);
+    Serial.println("light: " + currentFuzzyState.light_mu.sozel_ifade);
+    Serial.println("soil: " + currentFuzzyState.soil_mu.sozel_ifade);
+
     // 2. Output Rules (Currently Random/Simulated as per original code)
     generateOutputs();
     

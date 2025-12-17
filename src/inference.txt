@@ -149,34 +149,34 @@ double max4(double a, double b, double c, double d, double f)
 }
 typedef enum
 {
-    SİCAKLİK_LABEL_COK_DUSUK = 0, // 0
-    SİCAKLİK_LABEL_DUSUK,         // 1
-    SİCAKLİK_LABEL_ORTA,          // 2
-    SİCAKLİK_LABEL_YUKSEK,        // 3
-    SİCAKLİK_LABEL_COK_YUKSEK = 4 // 4
+    SICAKLIK_LABEL_COK_DUSUK = 0, // 0
+    SICAKLIK_LABEL_DUSUK,         // 1
+    SICAKLIK_LABEL_ORTA,          // 2
+    SICAKLIK_LABEL_YUKSEK,        // 3
+    SICAKLIK_LABEL_COK_YUKSEK = 4 // 4
 } SicaklikEtiket;
 
 SicaklikEtiket string_to_enum(const char *etiket)
 {
     if (strcmp(etiket, "cokdusuk") == 0)
     {
-        return SİCAKLİK_LABEL_COK_DUSUK;
+        return SICAKLIK_LABEL_COK_DUSUK;
     }
     else if (strcmp(etiket, "dusuk") == 0)
     {
-        return SİCAKLİK_LABEL_DUSUK;
+        return SICAKLIK_LABEL_DUSUK;
     }
     else if (strcmp(etiket, "orta") == 0)
     {
-        return SİCAKLİK_LABEL_ORTA;
+        return SICAKLIK_LABEL_ORTA;
     }
     else if (strcmp(etiket, "yuksek") == 0)
     {
-        return SİCAKLİK_LABEL_YUKSEK;
+        return SICAKLIK_LABEL_YUKSEK;
     }
     else if (strcmp(etiket, "cokyuksek") == 0)
     {
-        return SİCAKLİK_LABEL_COK_YUKSEK;
+        return SICAKLIK_LABEL_COK_YUKSEK;
     }
     return -1;
 }
@@ -288,7 +288,7 @@ void kural_atayici(const char *SicaklikSozel, const char *HavaNemiSozel)
     NemEtiket current_label1 = string_to_enum2(HavaNemiSozel);
     switch (current_label)
     {
-    case SİCAKLİK_LABEL_COK_DUSUK:
+    case SICAKLIK_LABEL_COK_DUSUK:
         switch (current_label1)
         {
         case NEM_LABEL_COK_DUSUK:
@@ -308,7 +308,7 @@ void kural_atayici(const char *SicaklikSozel, const char *HavaNemiSozel)
             break;
         }
         break;
-    case SİCAKLİK_LABEL_DUSUK:
+    case SICAKLIK_LABEL_DUSUK:
         switch (current_label1)
         {
         case NEM_LABEL_COK_DUSUK:
@@ -328,7 +328,7 @@ void kural_atayici(const char *SicaklikSozel, const char *HavaNemiSozel)
             break;
         }
         break;
-    case SİCAKLİK_LABEL_ORTA:
+    case SICAKLIK_LABEL_ORTA:
         switch (current_label1)
         {
         case NEM_LABEL_COK_DUSUK:
@@ -348,7 +348,7 @@ void kural_atayici(const char *SicaklikSozel, const char *HavaNemiSozel)
             break;
         }
         break;
-    case SİCAKLİK_LABEL_YUKSEK:
+    case SICAKLIK_LABEL_YUKSEK:
         switch (current_label1)
         {
         case NEM_LABEL_COK_DUSUK:
@@ -368,7 +368,7 @@ void kural_atayici(const char *SicaklikSozel, const char *HavaNemiSozel)
             break;
         }
         break;
-    case SİCAKLİK_LABEL_COK_YUKSEK:
+    case SICAKLIK_LABEL_COK_YUKSEK:
         switch (current_label1)
         {
         case NEM_LABEL_COK_DUSUK:
@@ -400,7 +400,7 @@ void kural_atayici2(const char *SicaklikSozel, const char *HavaNemiSozel)
     NemEtiket current_label1 = string_to_enum2(HavaNemiSozel);
     switch (current_label)
     {
-    case SİCAKLİK_LABEL_COK_DUSUK:
+    case SICAKLIK_LABEL_COK_DUSUK:
         switch (current_label1)
         {
         case NEM_LABEL_COK_DUSUK:
@@ -420,7 +420,7 @@ void kural_atayici2(const char *SicaklikSozel, const char *HavaNemiSozel)
             break;
         }
         break;
-    case SİCAKLİK_LABEL_DUSUK:
+    case SICAKLIK_LABEL_DUSUK:
         switch (current_label1)
         {
         case NEM_LABEL_COK_DUSUK:
@@ -440,7 +440,7 @@ void kural_atayici2(const char *SicaklikSozel, const char *HavaNemiSozel)
             break;
         }
         break;
-    case SİCAKLİK_LABEL_ORTA:
+    case SICAKLIK_LABEL_ORTA:
         switch (current_label1)
         {
         case NEM_LABEL_COK_DUSUK:
@@ -460,7 +460,7 @@ void kural_atayici2(const char *SicaklikSozel, const char *HavaNemiSozel)
             break;
         }
         break;
-    case SİCAKLİK_LABEL_YUKSEK:
+    case SICAKLIK_LABEL_YUKSEK:
         switch (current_label1)
         {
         case NEM_LABEL_COK_DUSUK:
@@ -480,7 +480,7 @@ void kural_atayici2(const char *SicaklikSozel, const char *HavaNemiSozel)
             break;
         }
         break;
-    case SİCAKLİK_LABEL_COK_YUKSEK:
+    case SICAKLIK_LABEL_COK_YUKSEK:
         switch (current_label1)
         {
         case NEM_LABEL_COK_DUSUK:
@@ -512,7 +512,7 @@ void kural_atayici3(const char *SicaklikSozel, const char *IsikSozel)
     IsikEtiket current_label1 = string_to_enum3(IsikSozel);
     switch (current_label)
     {
-    case SİCAKLİK_LABEL_COK_DUSUK:
+    case SICAKLIK_LABEL_COK_DUSUK:
         switch (current_label1)
         {
         case ISIK_LABEL_COK_DUSUK:
@@ -532,7 +532,7 @@ void kural_atayici3(const char *SicaklikSozel, const char *IsikSozel)
             break;
         }
         break;
-    case SİCAKLİK_LABEL_DUSUK:
+    case SICAKLIK_LABEL_DUSUK:
         switch (current_label1)
         {
         case ISIK_LABEL_COK_DUSUK:
@@ -552,7 +552,7 @@ void kural_atayici3(const char *SicaklikSozel, const char *IsikSozel)
             break;
         }
         break;
-    case SİCAKLİK_LABEL_ORTA:
+    case SICAKLIK_LABEL_ORTA:
         switch (current_label1)
         {
         case ISIK_LABEL_COK_DUSUK:
@@ -572,7 +572,7 @@ void kural_atayici3(const char *SicaklikSozel, const char *IsikSozel)
             break;
         }
         break;
-    case SİCAKLİK_LABEL_YUKSEK:
+    case SICAKLIK_LABEL_YUKSEK:
         switch (current_label1)
         {
         case ISIK_LABEL_COK_DUSUK:
@@ -592,7 +592,7 @@ void kural_atayici3(const char *SicaklikSozel, const char *IsikSozel)
             break;
         }
         break;
-    case SİCAKLİK_LABEL_COK_YUKSEK:
+    case SICAKLIK_LABEL_COK_YUKSEK:
         switch (current_label1)
         {
         case ISIK_LABEL_COK_DUSUK:

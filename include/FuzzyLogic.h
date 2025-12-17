@@ -20,6 +20,7 @@ private:
     float trimf(float x, float a, float b, float c);
 
     // Specific fuzzifiers
+    String getBestLabel(float cok_dusuk, float dusuk, float orta, float yuksek, float cok_yuksek);
     FuzzyMembership fuzzifyTemperature(float temp);
     FuzzyMembership fuzzifyHumidity(float hum);
     FuzzyMembership fuzzifyLight(float light);
