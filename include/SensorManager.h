@@ -12,6 +12,9 @@
 #define DHTPIN 4     
 #define DHTTYPE DHT11
 
+#define SDA 21
+#define SCL 22
+
 class SensorManager {
 public:
     SensorManager();
@@ -23,6 +26,7 @@ public:
 
 private:
     DHT dht;
+    BH1750 lightSensor;
     
     // Keep track of current state for simulation/smoothing
     float currentTemp;
