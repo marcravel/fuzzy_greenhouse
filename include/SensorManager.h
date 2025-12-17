@@ -4,6 +4,8 @@
 #include <Arduino.h>
 #include <Adafruit_Sensor.h>
 #include <DHT.h>
+#include <Wire.h>
+#include <BH1750.h>
 #include "SystemState.h"
 
 // Define pin constants here or in main
