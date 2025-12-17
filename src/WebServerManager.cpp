@@ -103,18 +103,9 @@ void WebServerManager::handleData() {
     json += "\"inputs_active\":[";
     
     auto appendActive = [&](float val, const FuzzyMembership& mu, bool lastItem) {
-        // Find max
-        float maxVal = -1; 
-        int bestIdx = 0;
-        float vals[] = {mu.cok_dusuk, mu.dusuk, mu.orta, mu.yuksek, mu.cok_yuksek};
-        
-        for(int k=0; k<5; k++) {
-            if(vals[k] > maxVal) { maxVal = vals[k]; bestIdx = k; }
-        }
-
         json += "{";
         json += "\"val\":" + String(val) + ",";
-        json += "\"label\":\"" + terms[bestIdx] + "\"";
+        json += "\"label\":\"" + mu.sozel_ifade + "\"";
         json += "}";
         if(!lastItem) json += ",";
     };

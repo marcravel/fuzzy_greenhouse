@@ -46,6 +46,7 @@ void SystemController::processLogic() {
     Serial.println("hum: " + currentFuzzyState.hum_mu.sozel_ifade);
     Serial.println("light: " + currentFuzzyState.light_mu.sozel_ifade);
     Serial.println("soil: " + currentFuzzyState.soil_mu.sozel_ifade);
+    Serial.println("-----");
 
     // 2. Output Rules (Currently Random/Simulated as per original code)
     generateOutputs();
