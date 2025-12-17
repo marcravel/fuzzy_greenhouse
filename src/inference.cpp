@@ -1,772 +1,862 @@
 #include <stdio.h>
 #include <math.h>
 #include <string.h>
-char SicaklikSozel[50]="";
-     char ToprakNemikSozel[50]="";
-      char HavaNemiSozel[50]="";
-       char IsikSozel[50]="";
-       int output_index;
-       char cikis[50]="";//sıcaklık cıkısı x
-       char Cooling[50]=""; // soğutma cıkısı x
-       char shadow[50]=""; // gölgelenem cıkısı
-       char water[50]="";  // su çıkısı pompa 
-       char lighting[50]=""; // aydınlatma cıksısı
-double min(double a, double b) {
+
+char SicaklikSozel[50] = "";
+char ToprakNemikSozel[50] = "";
+char HavaNemiSozel[50] = "";
+char IsikSozel[50] = "";
+int output_index;
+char cikis[50] = "";    // sıcaklık cıkısı x
+char Cooling[50] = "";  // soğutma cıkısı x
+char shadow[50] = "";   // gölgelenem cıkısı
+char water[50] = "";    // su çıkısı pompa
+char lighting[50] = ""; // aydınlatma cıksısı
+
+double min(double a, double b)
+{
     return (a < b) ? a : b;
 }
-double max(double a, double b) {
+
+double max(double a, double b)
+{
     return (a > b) ? a : b;
 }
-double max1(double a, double b,double c, double d,double f) {
-    char sozelifade[50]="";
-   double maxvalue= (a > b) ? a : b;
-   maxvalue=(maxvalue > c) ? maxvalue : c;
-    maxvalue=(maxvalue > d) ? maxvalue : d;
-     maxvalue=(maxvalue > f) ? maxvalue : f;
-     if (maxvalue==f)
-     {
+
+double max1(double a, double b, double c, double d, double f)
+{
+    char sozelifade[50] = "";
+    double maxvalue = (a > b) ? a : b;
+    maxvalue = (maxvalue > c) ? maxvalue : c;
+    maxvalue = (maxvalue > d) ? maxvalue : d;
+    maxvalue = (maxvalue > f) ? maxvalue : f;
+    if (maxvalue == f)
+    {
         snprintf(sozelifade, sizeof(sozelifade), "%s", "cokyuksek");
-     }
-     if (maxvalue==d)
-     {
+    }
+    if (maxvalue == d)
+    {
         snprintf(sozelifade, sizeof(sozelifade), "%s", "yuksek");
-     }
-     if (maxvalue==c)
-     {
+    }
+    if (maxvalue == c)
+    {
         snprintf(sozelifade, sizeof(sozelifade), "%s", "orta");
-     }
-     if (maxvalue==b)
-     {
+    }
+    if (maxvalue == b)
+    {
         snprintf(sozelifade, sizeof(sozelifade), "%s", "dusuk");
-     }
-     if (maxvalue==a)
-     {
+    }
+    if (maxvalue == a)
+    {
         snprintf(sozelifade, sizeof(sozelifade), "%s", "cokdusuk");
-     }
-      printf("%s\n",sozelifade);
-     strcpy(SicaklikSozel, sozelifade);
-     return maxvalue;
+    }
+    printf("%s\n", sozelifade);
+    strcpy(SicaklikSozel, sozelifade);
+    return maxvalue;
 }
-double max2(double a, double b,double c, double d,double f) {
-    char sozelifade[50]="";
-   double maxvalue= (a > b) ? a : b;
-   maxvalue=(maxvalue > c) ? maxvalue : c;
-    maxvalue=(maxvalue > d) ? maxvalue : d;
-     maxvalue=(maxvalue > f) ? maxvalue : f;
-     if (maxvalue==f)
-     {
+double max2(double a, double b, double c, double d, double f)
+{
+    char sozelifade[50] = "";
+    double maxvalue = (a > b) ? a : b;
+    maxvalue = (maxvalue > c) ? maxvalue : c;
+    maxvalue = (maxvalue > d) ? maxvalue : d;
+    maxvalue = (maxvalue > f) ? maxvalue : f;
+    if (maxvalue == f)
+    {
         snprintf(sozelifade, sizeof(sozelifade), "%s", "cokyuksek");
-     }
-     if (maxvalue==d)
-     {
+    }
+    if (maxvalue == d)
+    {
         snprintf(sozelifade, sizeof(sozelifade), "%s", "yuksek");
-     }
-     if (maxvalue==c)
-     {
+    }
+    if (maxvalue == c)
+    {
         snprintf(sozelifade, sizeof(sozelifade), "%s", "orta");
-     }
-     if (maxvalue==b)
-     {
+    }
+    if (maxvalue == b)
+    {
         snprintf(sozelifade, sizeof(sozelifade), "%s", "dusuk");
-     }
-     if (maxvalue==a)
-     {
+    }
+    if (maxvalue == a)
+    {
         snprintf(sozelifade, sizeof(sozelifade), "%s", "cokdusuk");
-     }
-     printf("%s\n",sozelifade);
-     strcpy(HavaNemiSozel, sozelifade);
-     return maxvalue;
+    }
+    printf("%s\n", sozelifade);
+    strcpy(HavaNemiSozel, sozelifade);
+    return maxvalue;
 }
-double max3(double a, double b,double c, double d,double f) {
-    char sozelifade[50]="";
-   double maxvalue= (a > b) ? a : b;
-   maxvalue=(maxvalue > c) ? maxvalue : c;
-    maxvalue=(maxvalue > d) ? maxvalue : d;
-     maxvalue=(maxvalue > f) ? maxvalue : f;
-     if (maxvalue==f)
-     {
+double max3(double a, double b, double c, double d, double f)
+{
+    char sozelifade[50] = "";
+    double maxvalue = (a > b) ? a : b;
+    maxvalue = (maxvalue > c) ? maxvalue : c;
+    maxvalue = (maxvalue > d) ? maxvalue : d;
+    maxvalue = (maxvalue > f) ? maxvalue : f;
+    if (maxvalue == f)
+    {
         snprintf(sozelifade, sizeof(sozelifade), "%s", "cokyuksek");
-     }
-     if (maxvalue==d)
-     {
+    }
+    if (maxvalue == d)
+    {
         snprintf(sozelifade, sizeof(sozelifade), "%s", "yuksek");
-     }
-     if (maxvalue==c)
-     {
+    }
+    if (maxvalue == c)
+    {
         snprintf(sozelifade, sizeof(sozelifade), "%s", "orta");
-     }
-     if (maxvalue==b)
-     {
+    }
+    if (maxvalue == b)
+    {
         snprintf(sozelifade, sizeof(sozelifade), "%s", "dusuk");
-     }
-     if (maxvalue==a)
-     {
+    }
+    if (maxvalue == a)
+    {
         snprintf(sozelifade, sizeof(sozelifade), "%s", "cokdusuk");
-     }
-     printf("%s\n",sozelifade);
-     strcpy(IsikSozel, sozelifade); 
-     return maxvalue;
+    }
+    printf("%s\n", sozelifade);
+    strcpy(IsikSozel, sozelifade);
+    return maxvalue;
 }
-double max4(double a, double b,double c, double d,double f) {
-    char sozelifade[50]="";
-   double maxvalue= (a > b) ? a : b;
-   maxvalue=(maxvalue > c) ? maxvalue : c;
-    maxvalue=(maxvalue > d) ? maxvalue : d;
-     maxvalue=(maxvalue > f) ? maxvalue : f;
-     if (maxvalue==f)
-     {
+double max4(double a, double b, double c, double d, double f)
+{
+    char sozelifade[50] = "";
+    double maxvalue = (a > b) ? a : b;
+    maxvalue = (maxvalue > c) ? maxvalue : c;
+    maxvalue = (maxvalue > d) ? maxvalue : d;
+    maxvalue = (maxvalue > f) ? maxvalue : f;
+    if (maxvalue == f)
+    {
         snprintf(sozelifade, sizeof(sozelifade), "%s", "cokyuksek");
-     }
-     if (maxvalue==d)
-     {
+    }
+    if (maxvalue == d)
+    {
         snprintf(sozelifade, sizeof(sozelifade), "%s", "yuksek");
-     }
-     if (maxvalue==c)
-     {
+    }
+    if (maxvalue == c)
+    {
         snprintf(sozelifade, sizeof(sozelifade), "%s", "orta");
-     }
-     if (maxvalue==b)
-     {
+    }
+    if (maxvalue == b)
+    {
         snprintf(sozelifade, sizeof(sozelifade), "%s", "dusuk");
-     }
-     if (maxvalue==a)
-     {
+    }
+    if (maxvalue == a)
+    {
         snprintf(sozelifade, sizeof(sozelifade), "%s", "cokdusuk");
-     }
-     printf("%s\n",sozelifade);
-     strcpy(ToprakNemikSozel, sozelifade); 
-     return maxvalue;
+    }
+    printf("%s\n", sozelifade);
+    strcpy(ToprakNemikSozel, sozelifade);
+    return maxvalue;
 }
-typedef enum {
-    SİCAKLİK_LABEL_COK_DUSUK=0,  // 0
-    SİCAKLİK_LABEL_DUSUK,     // 1
-    SİCAKLİK_LABEL_ORTA,      // 2
-    SİCAKLİK_LABEL_YUKSEK,    // 3
-    SİCAKLİK_LABEL_COK_YUKSEK=4 // 4
+typedef enum
+{
+    SİCAKLİK_LABEL_COK_DUSUK = 0, // 0
+    SİCAKLİK_LABEL_DUSUK,         // 1
+    SİCAKLİK_LABEL_ORTA,          // 2
+    SİCAKLİK_LABEL_YUKSEK,        // 3
+    SİCAKLİK_LABEL_COK_YUKSEK = 4 // 4
 } SicaklikEtiket;
-SicaklikEtiket string_to_enum(const char *etiket) {
-    if (strcmp(etiket, "cokdusuk") == 0) {
+
+SicaklikEtiket string_to_enum(const char *etiket)
+{
+    if (strcmp(etiket, "cokdusuk") == 0)
+    {
         return SİCAKLİK_LABEL_COK_DUSUK;
-    } else if (strcmp(etiket, "dusuk") == 0) {
+    }
+    else if (strcmp(etiket, "dusuk") == 0)
+    {
         return SİCAKLİK_LABEL_DUSUK;
-    } else if (strcmp(etiket, "orta") == 0) {
+    }
+    else if (strcmp(etiket, "orta") == 0)
+    {
         return SİCAKLİK_LABEL_ORTA;
-    } else if (strcmp(etiket, "yuksek") == 0) {
+    }
+    else if (strcmp(etiket, "yuksek") == 0)
+    {
         return SİCAKLİK_LABEL_YUKSEK;
-    } else if (strcmp(etiket, "cokyuksek") == 0) {
+    }
+    else if (strcmp(etiket, "cokyuksek") == 0)
+    {
         return SİCAKLİK_LABEL_COK_YUKSEK;
     }
-    return -1; 
+    return -1;
 }
-typedef enum {
-    NEM_LABEL_COK_DUSUK=0, // 0
-    NEM_LABEL_DUSUK,     // 1
-    NEM_LABEL_ORTA,      // 2
-    NEM_LABEL_YUKSEK,    // 3
-    NEM_LABEL_COK_YUKSEK=4 // 4
-} NemEtiket;
-NemEtiket string_to_enum2(const char *etiket) {
-    if (strcmp(etiket, "cokdusuk") == 0) {
-        return  NEM_LABEL_COK_DUSUK;
-    } else if (strcmp(etiket, "dusuk") == 0) {
-        return NEM_LABEL_DUSUK;
-    } else if (strcmp(etiket, "orta") == 0) {
-        return  NEM_LABEL_ORTA;
-    } else if (strcmp(etiket, "yuksek") == 0) {
-        return  NEM_LABEL_YUKSEK;
-    } else if (strcmp(etiket, "cokyuksek") == 0) {
-        return  NEM_LABEL_COK_YUKSEK;
-    }
-    return -1; 
-}
-typedef enum {
-    NEMTOPRAK_LABEL_COK_DUSUK=0, // 0
-    NEMTOPRAK_LABEL_DUSUK,     // 1
-    NEMTOPRAK_LABEL_ORTA,      // 2
-    NEMTOPRAK_LABEL_YUKSEK,    // 3
-    NEMTOPRAK_LABEL_COK_YUKSEK=4 // 4
-} NemToprakEtiket;
-NemToprakEtiket string_to_enum4(const char *etiket) {
-    if (strcmp(etiket, "cokdusuk") == 0) {
-        return  NEMTOPRAK_LABEL_COK_DUSUK;
-    } else if (strcmp(etiket, "dusuk") == 0) {
-        return NEMTOPRAK_LABEL_DUSUK;
-    } else if (strcmp(etiket, "orta") == 0) {
-        return  NEMTOPRAK_LABEL_ORTA;
-    } else if (strcmp(etiket, "yuksek") == 0) {
-        return  NEMTOPRAK_LABEL_YUKSEK;
-    } else if (strcmp(etiket, "cokyuksek") == 0) {
-        return  NEMTOPRAK_LABEL_COK_YUKSEK;
-    }
-    return -1; 
-}
-typedef enum {
-    ISIK_LABEL_COK_DUSUK=0, // 0
-    ISIK_LABEL_DUSUK,     // 1
-    ISIK_LABEL_ORTA,      // 2
-    ISIK_LABEL_YUKSEK,    // 3
-    ISIK_LABEL_COK_YUKSEK=4 // 4
-} IsikEtiket;
-IsikEtiket string_to_enum3(const char *etiket) {
-    if (strcmp(etiket, "cokdusuk") == 0) {
-        return  ISIK_LABEL_COK_DUSUK;
-    } else if (strcmp(etiket, "dusuk") == 0) {
-        return ISIK_LABEL_DUSUK;
-    } else if (strcmp(etiket, "orta") == 0) {
-        return  ISIK_LABEL_ORTA;
-    } else if (strcmp(etiket, "yuksek") == 0) {
-        return  ISIK_LABEL_YUKSEK;
-    } else if (strcmp(etiket, "cokyuksek") == 0) {
-        return  ISIK_LABEL_COK_YUKSEK;
-    }
-    return -1; 
-}
-void kural_atayici(const char *SicaklikSozel,const char *HavaNemiSozel) {
-    SicaklikEtiket current_label = string_to_enum(SicaklikSozel);
-    NemEtiket current_label1= string_to_enum2(HavaNemiSozel);
-    switch (current_label) 
-    {
-        case SİCAKLİK_LABEL_COK_DUSUK:
-        switch (current_label1)
-        {
-        case NEM_LABEL_COK_DUSUK:
-           strcpy(cikis,"cokyuksek");
-            break;
-        case NEM_LABEL_DUSUK:
-           strcpy(cikis,"cokyuksek");
-            break;
-        case NEM_LABEL_ORTA:
-           strcpy(cikis,"yuksek");
-            break;
-            case NEM_LABEL_YUKSEK:
-           strcpy(cikis,"yuksek");
-            break;
-            case NEM_LABEL_COK_YUKSEK:
-           strcpy(cikis,"yuksek");
-            break;
-        }
-            break;
-        case SİCAKLİK_LABEL_DUSUK:
-        switch (current_label1)
-        {
-        case NEM_LABEL_COK_DUSUK:
-           strcpy(cikis,"yuksek");
-            break;
-        case NEM_LABEL_DUSUK:
-           strcpy(cikis,"yuksek");
-            break;
-        case NEM_LABEL_ORTA:
-           strcpy(cikis,"yuksek");
-            break;
-            case NEM_LABEL_YUKSEK:
-           strcpy(cikis,"orta");
-            break;
-            case NEM_LABEL_COK_YUKSEK:
-           strcpy(cikis,"orta");
-            break;  
-        }
-        break;
-        case SİCAKLİK_LABEL_ORTA:
-          switch (current_label1)
-        {
-        case NEM_LABEL_COK_DUSUK:
-           strcpy(cikis,"orta");
-            break;
-        case NEM_LABEL_DUSUK:
-           strcpy(cikis,"orta");
-            break;
-        case NEM_LABEL_ORTA:
-           strcpy(cikis,"orta");
-            break;
-            case NEM_LABEL_YUKSEK:
-           strcpy(cikis,"orta");
-            break;
-            case NEM_LABEL_COK_YUKSEK:
-           strcpy(cikis,"dusuk");
-            break;
-        }
-        break;
-         case SİCAKLİK_LABEL_YUKSEK:
-          switch (current_label1)
-        {
-        case NEM_LABEL_COK_DUSUK:
-           strcpy(cikis,"dusuk");
-            break;
-        case NEM_LABEL_DUSUK:
-           strcpy(cikis,"dusuk");
-            break;
-        case NEM_LABEL_ORTA:
-           strcpy(cikis,"dusuk");
-            break;
-            case NEM_LABEL_YUKSEK:
-           strcpy(cikis,"dusuk");
-            break;
-            case NEM_LABEL_COK_YUKSEK:
-           strcpy(cikis,"dusuk");
-            break;
-        }
-        break;
-         case SİCAKLİK_LABEL_COK_YUKSEK:
-          switch (current_label1)
-        {
-        case NEM_LABEL_COK_DUSUK:
-           strcpy(cikis,"cokdusuk");
-            break;
-        case NEM_LABEL_DUSUK:
-           strcpy(cikis,"cokdusuk");
-            break;
-        case NEM_LABEL_ORTA:
-           strcpy(cikis,"cokdusuk");
-            break;
-            case NEM_LABEL_YUKSEK:
-           strcpy(cikis,"cokdusuk");
-            break;
-            case NEM_LABEL_COK_YUKSEK:
-           strcpy(cikis,"cokdusuk");
-            break;
-        }
-        break;
-        default:
-            printf("HATA: Tanimsiz Sicaklik Etiketi.\n");
-            break;
-    }
-}
-void kural_atayici2(const char *SicaklikSozel,const char *HavaNemiSozel) {
-    SicaklikEtiket current_label = string_to_enum(SicaklikSozel);
-    NemEtiket current_label1= string_to_enum2(HavaNemiSozel);
-    switch (current_label) 
-    {
-        case SİCAKLİK_LABEL_COK_DUSUK:
-        switch (current_label1)
-        {
-        case NEM_LABEL_COK_DUSUK:
-           strcpy(Cooling,"cokdusuk");
-            break;
-        case NEM_LABEL_DUSUK:
-           strcpy(Cooling,"cokdusuk");
-            break;
-        case NEM_LABEL_ORTA:
-           strcpy(Cooling,"cokdusuk");
-            break;
-            case NEM_LABEL_YUKSEK:
-           strcpy(Cooling,"cokdusuk");
-            break;
-            case NEM_LABEL_COK_YUKSEK:
-           strcpy(Cooling,"cokdusuk");
-            break;
-        }
-            break;
-        case SİCAKLİK_LABEL_DUSUK:
-        switch (current_label1)
-        {
-        case NEM_LABEL_COK_DUSUK:
-           strcpy(Cooling,"dusuk");
-            break;
-        case NEM_LABEL_DUSUK:
-           strcpy(Cooling,"dusuk");
-            break;
-        case NEM_LABEL_ORTA:
-           strcpy(Cooling,"dusuk");
-            break;
-            case NEM_LABEL_YUKSEK:
-           strcpy(Cooling,"dusuk");
-            break;
-            case NEM_LABEL_COK_YUKSEK:
-           strcpy(Cooling,"dusuk");
-            break;
-        }
-        break;
-        case SİCAKLİK_LABEL_ORTA:
-          switch (current_label1)
-        {
-        case NEM_LABEL_COK_DUSUK:
-           strcpy(Cooling,"dusuk");
-            break;
-        case NEM_LABEL_DUSUK:
-           strcpy(Cooling,"orta");
-            break;
-        case NEM_LABEL_ORTA:
-           strcpy(Cooling,"orta");
-            break;
-            case NEM_LABEL_YUKSEK:
-           strcpy(Cooling,"orta");
-            break;
-            case NEM_LABEL_COK_YUKSEK:
-           strcpy(Cooling,"orta");
-            break;
-        }
-        break;
-         case SİCAKLİK_LABEL_YUKSEK:
-          switch (current_label1)
-        {
-        case NEM_LABEL_COK_DUSUK:
-           strcpy(Cooling,"orta");
-            break;
-        case NEM_LABEL_DUSUK:
-           strcpy(Cooling,"orta");
-            break;
-        case NEM_LABEL_ORTA:
-           strcpy(Cooling,"yuksek");
-            break;
-            case NEM_LABEL_YUKSEK:
-           strcpy(Cooling,"yuksek");
-            break;
-            case NEM_LABEL_COK_YUKSEK:
-           strcpy(Cooling,"yuksek");
-            break; 
-        }
-        break;
-         case SİCAKLİK_LABEL_COK_YUKSEK:
-          switch (current_label1)
-        {
-        case NEM_LABEL_COK_DUSUK:
-           strcpy(Cooling,"yuksek");
-            break;
-        case NEM_LABEL_DUSUK:
-           strcpy(Cooling,"yuksek");
-            break;
-        case NEM_LABEL_ORTA:
-           strcpy(Cooling,"yuksek");
-            break;
-            case NEM_LABEL_YUKSEK:
-           strcpy(Cooling,"cokyuksek");
-            break;
-            case NEM_LABEL_COK_YUKSEK:
-           strcpy(Cooling,"cokyuksek");
-            break;
-        }
-        break;
-        default:
-            printf("HATA: Tanimsiz Sicaklik Etiketi.\n");
-            break;
-    }
-}
-void kural_atayici3(const char *SicaklikSozel,const char *IsikSozel) {
-    SicaklikEtiket current_label = string_to_enum(SicaklikSozel);
-    IsikEtiket current_label1= string_to_enum3(IsikSozel);
-    switch (current_label) 
-    {
-        case SİCAKLİK_LABEL_COK_DUSUK:
-        switch (current_label1)
-        {
-        case ISIK_LABEL_COK_DUSUK:
-           strcpy(shadow,"cokdusuk");
-            break;
-        case ISIK_LABEL_DUSUK:
-           strcpy(shadow,"cokdusuk");
-            break;
-        case ISIK_LABEL_ORTA:
-           strcpy(shadow,"dusuk");
-            break;
-            case ISIK_LABEL_YUKSEK:
-           strcpy(shadow,"orta");
-            break;
-            case ISIK_LABEL_COK_YUKSEK:
-           strcpy(shadow,"orta");
-            break;
-        }
-            break;
-        case SİCAKLİK_LABEL_DUSUK:
-        switch (current_label1)
-        {
-        case ISIK_LABEL_COK_DUSUK:
-           strcpy(shadow,"cokdusuk");
-            break;
-        case ISIK_LABEL_DUSUK:
-           strcpy(shadow,"dusuk");
-            break;
-        case ISIK_LABEL_ORTA:
-           strcpy(shadow,"dusuk");
-            break;
-            case ISIK_LABEL_YUKSEK:
-           strcpy(shadow,"orta");
-            break;
-            case ISIK_LABEL_COK_YUKSEK:
-           strcpy(shadow,"yuksek");
-            break;
-        }
-        break;
-        case SİCAKLİK_LABEL_ORTA:
-          switch (current_label1)
-        {
-        case ISIK_LABEL_COK_DUSUK:
-           strcpy(shadow,"cokdusuk");
-            break;
-        case ISIK_LABEL_DUSUK:
-           strcpy(shadow,"dusuk");
-            break;
-        case ISIK_LABEL_ORTA:
-           strcpy(shadow,"orta");
-            break;
-            case ISIK_LABEL_YUKSEK:
-           strcpy(shadow,"orta");
-            break;
-            case ISIK_LABEL_COK_YUKSEK:
-           strcpy(shadow,"yuksek");
-            break;
-        }
-        break;
-         case SİCAKLİK_LABEL_YUKSEK:
-          switch (current_label1)
-        {
-        case ISIK_LABEL_COK_DUSUK:
-           strcpy(shadow,"dusuk");
-            break;
-        case ISIK_LABEL_DUSUK:
-           strcpy(shadow,"dusuk");
-            break;
-        case ISIK_LABEL_ORTA:
-           strcpy(shadow,"orta");
-            break;
-            case ISIK_LABEL_YUKSEK:
-           strcpy(shadow,"yuksek");
-            break;
-            case ISIK_LABEL_COK_YUKSEK:
-           strcpy(shadow,"yuksek");
-            break;
-        }
-        break;
-         case SİCAKLİK_LABEL_COK_YUKSEK:
-          switch (current_label1)
-        {
-        case ISIK_LABEL_COK_DUSUK:
-           strcpy(shadow,"dusuk");
-            break;
-        case ISIK_LABEL_DUSUK:
-           strcpy(shadow,"orta");
-            break;
-        case ISIK_LABEL_ORTA:
-           strcpy(shadow,"orta");
-            break;
-            case ISIK_LABEL_YUKSEK:
-           strcpy(shadow,"yuksek");
-            break;
-            case ISIK_LABEL_COK_YUKSEK:
-           strcpy(shadow,"cokyuksek");
-            break;
-        }
-        break;
-        default:
-            printf("HATA: Tanimsiz Sicaklik Etiketi.\n");
-            break;
-    }
-}
-void kural_atayici4(const char *HavaNemiSozel,const char *ToprakNemikSozel) {
-    NemEtiket current_label = string_to_enum2(HavaNemiSozel);
-    NemToprakEtiket current_label1= string_to_enum4(ToprakNemikSozel);
-    switch (current_label) 
-    {
-        case NEM_LABEL_COK_DUSUK:
-        switch (current_label1)
-        {
-        case NEMTOPRAK_LABEL_COK_DUSUK:
-           strcpy(water,"cokyuksek");
-            break;
-        case NEMTOPRAK_LABEL_DUSUK:
-           strcpy(water,"cokyuksek");
-            break;
-        case NEMTOPRAK_LABEL_ORTA:
-           strcpy(water,"yuksek");
-            break;
-            case NEMTOPRAK_LABEL_YUKSEK:
-           strcpy(water,"yuksek");
-            break;
-            case NEMTOPRAK_LABEL_COK_YUKSEK:
-           strcpy(water,"orta");
-            break;
-        }
-            break;
-        case NEM_LABEL_DUSUK:
-        switch (current_label1)
-        {
-        case NEMTOPRAK_LABEL_COK_DUSUK:
-           strcpy(water,"yuksek");
-            break;
-        case NEMTOPRAK_LABEL_DUSUK:
-           strcpy(water,"yuksek");
-            break;
-        case NEMTOPRAK_LABEL_ORTA:
-           strcpy(water,"yuksek");
-            break;
-            case NEMTOPRAK_LABEL_YUKSEK:
-           strcpy(water,"orta");
-            break;
-            case NEMTOPRAK_LABEL_COK_YUKSEK:
-           strcpy(water,"orta");
-            break;
-        }
-        break;
-        case NEM_LABEL_ORTA:
-          switch (current_label1)
-        {
-        case NEMTOPRAK_LABEL_COK_DUSUK:
-           strcpy(water,"yuksek");
-            break;
-        case NEMTOPRAK_LABEL_DUSUK:
-           strcpy(water,"orta");
-            break;
-        case NEMTOPRAK_LABEL_ORTA:
-           strcpy(water,"orta");
-            break;
-            case NEMTOPRAK_LABEL_YUKSEK:
-           strcpy(water,"orta");
-            break;
-            case NEMTOPRAK_LABEL_COK_YUKSEK:
-           strcpy(water,"dusuk");
-            break;
-        }
-        break;
-         case NEM_LABEL_YUKSEK:
-          switch (current_label1)
-        {
-        case NEMTOPRAK_LABEL_COK_DUSUK:
-           strcpy(water,"orta");
-            break;
-        case NEMTOPRAK_LABEL_DUSUK:
-           strcpy(water,"orta");
-            break;
-        case NEMTOPRAK_LABEL_ORTA:
-           strcpy(water,"dusuk");
-            break;
-            case NEMTOPRAK_LABEL_YUKSEK:
-           strcpy(water,"dusuk");
-            break;
-            case NEMTOPRAK_LABEL_COK_YUKSEK:
-           strcpy(water,"dusuk");
-            break;
-        }
-        break;
-         case NEM_LABEL_COK_YUKSEK:
-          switch (current_label1)
-        {
-        case NEMTOPRAK_LABEL_COK_DUSUK:
-           strcpy(water,"dusuk");
-            break;
-        case NEMTOPRAK_LABEL_DUSUK:
-           strcpy(water,"dusuk");
-            break;
-        case NEMTOPRAK_LABEL_ORTA:
-           strcpy(water,"dusuk");
-            break;
-            case NEMTOPRAK_LABEL_YUKSEK:
-           strcpy(water,"cokdusuk");
-            break;
-            case NEMTOPRAK_LABEL_COK_YUKSEK:
-           strcpy(water,"cokdusuk");
-            break;
-        }
-        break;
-        default:
-            printf("HATA: Tanimsiz Sicaklik Etiketi.\n");
-            break;
-    }
-}
-void kural_atayici5(const char *IsikSozel){
-IsikEtiket current_label = string_to_enum3(IsikSozel);
-switch (current_label)
+typedef enum
 {
-case  ISIK_LABEL_COK_DUSUK:
-    strcpy(lighting,"cokyuksek");
-    break;
-case  ISIK_LABEL_DUSUK:
-    strcpy(lighting,"yuksek");
-    break;
-case  ISIK_LABEL_ORTA:
-    strcpy(lighting,"orta");
-    break;
-case  ISIK_LABEL_YUKSEK:
-    strcpy(lighting,"dusuk");
-    break;
-case  ISIK_LABEL_COK_YUKSEK:
-    strcpy(lighting,"cokdusuk");
-    break;            
-default:
-            printf("HATA: Tanimsiz Sicaklik Etiketi.\n");
-    break;
-}
-}
-double trapmf2(double x, double a, double b, double c, double d) {
-    double mu_yukselen ;
-    if (a<=x)
+    NEM_LABEL_COK_DUSUK = 0, // 0
+    NEM_LABEL_DUSUK,         // 1
+    NEM_LABEL_ORTA,          // 2
+    NEM_LABEL_YUKSEK,        // 3
+    NEM_LABEL_COK_YUKSEK = 4 // 4
+} NemEtiket;
+
+NemEtiket string_to_enum2(const char *etiket)
+{
+    if (strcmp(etiket, "cokdusuk") == 0)
     {
-        if (x<=b)
+        return NEM_LABEL_COK_DUSUK;
+    }
+    else if (strcmp(etiket, "dusuk") == 0)
+    {
+        return NEM_LABEL_DUSUK;
+    }
+    else if (strcmp(etiket, "orta") == 0)
+    {
+        return NEM_LABEL_ORTA;
+    }
+    else if (strcmp(etiket, "yuksek") == 0)
+    {
+        return NEM_LABEL_YUKSEK;
+    }
+    else if (strcmp(etiket, "cokyuksek") == 0)
+    {
+        return NEM_LABEL_COK_YUKSEK;
+    }
+    return -1;
+}
+
+typedef enum
+{
+    NEMTOPRAK_LABEL_COK_DUSUK = 0, // 0
+    NEMTOPRAK_LABEL_DUSUK,         // 1
+    NEMTOPRAK_LABEL_ORTA,          // 2
+    NEMTOPRAK_LABEL_YUKSEK,        // 3
+    NEMTOPRAK_LABEL_COK_YUKSEK = 4 // 4
+} NemToprakEtiket;
+
+NemToprakEtiket string_to_enum4(const char *etiket)
+{
+    if (strcmp(etiket, "cokdusuk") == 0)
+    {
+        return NEMTOPRAK_LABEL_COK_DUSUK;
+    }
+    else if (strcmp(etiket, "dusuk") == 0)
+    {
+        return NEMTOPRAK_LABEL_DUSUK;
+    }
+    else if (strcmp(etiket, "orta") == 0)
+    {
+        return NEMTOPRAK_LABEL_ORTA;
+    }
+    else if (strcmp(etiket, "yuksek") == 0)
+    {
+        return NEMTOPRAK_LABEL_YUKSEK;
+    }
+    else if (strcmp(etiket, "cokyuksek") == 0)
+    {
+        return NEMTOPRAK_LABEL_COK_YUKSEK;
+    }
+    return -1;
+}
+
+typedef enum
+{
+    ISIK_LABEL_COK_DUSUK = 0, // 0
+    ISIK_LABEL_DUSUK,         // 1
+    ISIK_LABEL_ORTA,          // 2
+    ISIK_LABEL_YUKSEK,        // 3
+    ISIK_LABEL_COK_YUKSEK = 4 // 4
+} IsikEtiket;
+
+IsikEtiket string_to_enum3(const char *etiket)
+{
+    if (strcmp(etiket, "cokdusuk") == 0)
+    {
+        return ISIK_LABEL_COK_DUSUK;
+    }
+    else if (strcmp(etiket, "dusuk") == 0)
+    {
+        return ISIK_LABEL_DUSUK;
+    }
+    else if (strcmp(etiket, "orta") == 0)
+    {
+        return ISIK_LABEL_ORTA;
+    }
+    else if (strcmp(etiket, "yuksek") == 0)
+    {
+        return ISIK_LABEL_YUKSEK;
+    }
+    else if (strcmp(etiket, "cokyuksek") == 0)
+    {
+        return ISIK_LABEL_COK_YUKSEK;
+    }
+    return -1;
+}
+
+void kural_atayici(const char *SicaklikSozel, const char *HavaNemiSozel)
+{
+    SicaklikEtiket current_label = string_to_enum(SicaklikSozel);
+    NemEtiket current_label1 = string_to_enum2(HavaNemiSozel);
+    switch (current_label)
+    {
+    case SİCAKLİK_LABEL_COK_DUSUK:
+        switch (current_label1)
         {
-            mu_yukselen=1;
+        case NEM_LABEL_COK_DUSUK:
+            strcpy(cikis, "cokyuksek");
+            break;
+        case NEM_LABEL_DUSUK:
+            strcpy(cikis, "cokyuksek");
+            break;
+        case NEM_LABEL_ORTA:
+            strcpy(cikis, "yuksek");
+            break;
+        case NEM_LABEL_YUKSEK:
+            strcpy(cikis, "yuksek");
+            break;
+        case NEM_LABEL_COK_YUKSEK:
+            strcpy(cikis, "yuksek");
+            break;
+        }
+        break;
+    case SİCAKLİK_LABEL_DUSUK:
+        switch (current_label1)
+        {
+        case NEM_LABEL_COK_DUSUK:
+            strcpy(cikis, "yuksek");
+            break;
+        case NEM_LABEL_DUSUK:
+            strcpy(cikis, "yuksek");
+            break;
+        case NEM_LABEL_ORTA:
+            strcpy(cikis, "yuksek");
+            break;
+        case NEM_LABEL_YUKSEK:
+            strcpy(cikis, "orta");
+            break;
+        case NEM_LABEL_COK_YUKSEK:
+            strcpy(cikis, "orta");
+            break;
+        }
+        break;
+    case SİCAKLİK_LABEL_ORTA:
+        switch (current_label1)
+        {
+        case NEM_LABEL_COK_DUSUK:
+            strcpy(cikis, "orta");
+            break;
+        case NEM_LABEL_DUSUK:
+            strcpy(cikis, "orta");
+            break;
+        case NEM_LABEL_ORTA:
+            strcpy(cikis, "orta");
+            break;
+        case NEM_LABEL_YUKSEK:
+            strcpy(cikis, "orta");
+            break;
+        case NEM_LABEL_COK_YUKSEK:
+            strcpy(cikis, "dusuk");
+            break;
+        }
+        break;
+    case SİCAKLİK_LABEL_YUKSEK:
+        switch (current_label1)
+        {
+        case NEM_LABEL_COK_DUSUK:
+            strcpy(cikis, "dusuk");
+            break;
+        case NEM_LABEL_DUSUK:
+            strcpy(cikis, "dusuk");
+            break;
+        case NEM_LABEL_ORTA:
+            strcpy(cikis, "dusuk");
+            break;
+        case NEM_LABEL_YUKSEK:
+            strcpy(cikis, "dusuk");
+            break;
+        case NEM_LABEL_COK_YUKSEK:
+            strcpy(cikis, "dusuk");
+            break;
+        }
+        break;
+    case SİCAKLİK_LABEL_COK_YUKSEK:
+        switch (current_label1)
+        {
+        case NEM_LABEL_COK_DUSUK:
+            strcpy(cikis, "cokdusuk");
+            break;
+        case NEM_LABEL_DUSUK:
+            strcpy(cikis, "cokdusuk");
+            break;
+        case NEM_LABEL_ORTA:
+            strcpy(cikis, "cokdusuk");
+            break;
+        case NEM_LABEL_YUKSEK:
+            strcpy(cikis, "cokdusuk");
+            break;
+        case NEM_LABEL_COK_YUKSEK:
+            strcpy(cikis, "cokdusuk");
+            break;
+        }
+        break;
+    default:
+        printf("HATA: Tanimsiz Sicaklik Etiketi.\n");
+        break;
+    }
+}
+
+void kural_atayici2(const char *SicaklikSozel, const char *HavaNemiSozel)
+{
+    SicaklikEtiket current_label = string_to_enum(SicaklikSozel);
+    NemEtiket current_label1 = string_to_enum2(HavaNemiSozel);
+    switch (current_label)
+    {
+    case SİCAKLİK_LABEL_COK_DUSUK:
+        switch (current_label1)
+        {
+        case NEM_LABEL_COK_DUSUK:
+            strcpy(Cooling, "cokdusuk");
+            break;
+        case NEM_LABEL_DUSUK:
+            strcpy(Cooling, "cokdusuk");
+            break;
+        case NEM_LABEL_ORTA:
+            strcpy(Cooling, "cokdusuk");
+            break;
+        case NEM_LABEL_YUKSEK:
+            strcpy(Cooling, "cokdusuk");
+            break;
+        case NEM_LABEL_COK_YUKSEK:
+            strcpy(Cooling, "cokdusuk");
+            break;
+        }
+        break;
+    case SİCAKLİK_LABEL_DUSUK:
+        switch (current_label1)
+        {
+        case NEM_LABEL_COK_DUSUK:
+            strcpy(Cooling, "dusuk");
+            break;
+        case NEM_LABEL_DUSUK:
+            strcpy(Cooling, "dusuk");
+            break;
+        case NEM_LABEL_ORTA:
+            strcpy(Cooling, "dusuk");
+            break;
+        case NEM_LABEL_YUKSEK:
+            strcpy(Cooling, "dusuk");
+            break;
+        case NEM_LABEL_COK_YUKSEK:
+            strcpy(Cooling, "dusuk");
+            break;
+        }
+        break;
+    case SİCAKLİK_LABEL_ORTA:
+        switch (current_label1)
+        {
+        case NEM_LABEL_COK_DUSUK:
+            strcpy(Cooling, "dusuk");
+            break;
+        case NEM_LABEL_DUSUK:
+            strcpy(Cooling, "orta");
+            break;
+        case NEM_LABEL_ORTA:
+            strcpy(Cooling, "orta");
+            break;
+        case NEM_LABEL_YUKSEK:
+            strcpy(Cooling, "orta");
+            break;
+        case NEM_LABEL_COK_YUKSEK:
+            strcpy(Cooling, "orta");
+            break;
+        }
+        break;
+    case SİCAKLİK_LABEL_YUKSEK:
+        switch (current_label1)
+        {
+        case NEM_LABEL_COK_DUSUK:
+            strcpy(Cooling, "orta");
+            break;
+        case NEM_LABEL_DUSUK:
+            strcpy(Cooling, "orta");
+            break;
+        case NEM_LABEL_ORTA:
+            strcpy(Cooling, "yuksek");
+            break;
+        case NEM_LABEL_YUKSEK:
+            strcpy(Cooling, "yuksek");
+            break;
+        case NEM_LABEL_COK_YUKSEK:
+            strcpy(Cooling, "yuksek");
+            break;
+        }
+        break;
+    case SİCAKLİK_LABEL_COK_YUKSEK:
+        switch (current_label1)
+        {
+        case NEM_LABEL_COK_DUSUK:
+            strcpy(Cooling, "yuksek");
+            break;
+        case NEM_LABEL_DUSUK:
+            strcpy(Cooling, "yuksek");
+            break;
+        case NEM_LABEL_ORTA:
+            strcpy(Cooling, "yuksek");
+            break;
+        case NEM_LABEL_YUKSEK:
+            strcpy(Cooling, "cokyuksek");
+            break;
+        case NEM_LABEL_COK_YUKSEK:
+            strcpy(Cooling, "cokyuksek");
+            break;
+        }
+        break;
+    default:
+        printf("HATA: Tanimsiz Sicaklik Etiketi.\n");
+        break;
+    }
+}
+
+void kural_atayici3(const char *SicaklikSozel, const char *IsikSozel)
+{
+    SicaklikEtiket current_label = string_to_enum(SicaklikSozel);
+    IsikEtiket current_label1 = string_to_enum3(IsikSozel);
+    switch (current_label)
+    {
+    case SİCAKLİK_LABEL_COK_DUSUK:
+        switch (current_label1)
+        {
+        case ISIK_LABEL_COK_DUSUK:
+            strcpy(shadow, "cokdusuk");
+            break;
+        case ISIK_LABEL_DUSUK:
+            strcpy(shadow, "cokdusuk");
+            break;
+        case ISIK_LABEL_ORTA:
+            strcpy(shadow, "dusuk");
+            break;
+        case ISIK_LABEL_YUKSEK:
+            strcpy(shadow, "orta");
+            break;
+        case ISIK_LABEL_COK_YUKSEK:
+            strcpy(shadow, "orta");
+            break;
+        }
+        break;
+    case SİCAKLİK_LABEL_DUSUK:
+        switch (current_label1)
+        {
+        case ISIK_LABEL_COK_DUSUK:
+            strcpy(shadow, "cokdusuk");
+            break;
+        case ISIK_LABEL_DUSUK:
+            strcpy(shadow, "dusuk");
+            break;
+        case ISIK_LABEL_ORTA:
+            strcpy(shadow, "dusuk");
+            break;
+        case ISIK_LABEL_YUKSEK:
+            strcpy(shadow, "orta");
+            break;
+        case ISIK_LABEL_COK_YUKSEK:
+            strcpy(shadow, "yuksek");
+            break;
+        }
+        break;
+    case SİCAKLİK_LABEL_ORTA:
+        switch (current_label1)
+        {
+        case ISIK_LABEL_COK_DUSUK:
+            strcpy(shadow, "cokdusuk");
+            break;
+        case ISIK_LABEL_DUSUK:
+            strcpy(shadow, "dusuk");
+            break;
+        case ISIK_LABEL_ORTA:
+            strcpy(shadow, "orta");
+            break;
+        case ISIK_LABEL_YUKSEK:
+            strcpy(shadow, "orta");
+            break;
+        case ISIK_LABEL_COK_YUKSEK:
+            strcpy(shadow, "yuksek");
+            break;
+        }
+        break;
+    case SİCAKLİK_LABEL_YUKSEK:
+        switch (current_label1)
+        {
+        case ISIK_LABEL_COK_DUSUK:
+            strcpy(shadow, "dusuk");
+            break;
+        case ISIK_LABEL_DUSUK:
+            strcpy(shadow, "dusuk");
+            break;
+        case ISIK_LABEL_ORTA:
+            strcpy(shadow, "orta");
+            break;
+        case ISIK_LABEL_YUKSEK:
+            strcpy(shadow, "yuksek");
+            break;
+        case ISIK_LABEL_COK_YUKSEK:
+            strcpy(shadow, "yuksek");
+            break;
+        }
+        break;
+    case SİCAKLİK_LABEL_COK_YUKSEK:
+        switch (current_label1)
+        {
+        case ISIK_LABEL_COK_DUSUK:
+            strcpy(shadow, "dusuk");
+            break;
+        case ISIK_LABEL_DUSUK:
+            strcpy(shadow, "orta");
+            break;
+        case ISIK_LABEL_ORTA:
+            strcpy(shadow, "orta");
+            break;
+        case ISIK_LABEL_YUKSEK:
+            strcpy(shadow, "yuksek");
+            break;
+        case ISIK_LABEL_COK_YUKSEK:
+            strcpy(shadow, "cokyuksek");
+            break;
+        }
+        break;
+    default:
+        printf("HATA: Tanimsiz Sicaklik Etiketi.\n");
+        break;
+    }
+}
+
+void kural_atayici4(const char *HavaNemiSozel, const char *ToprakNemikSozel)
+{
+    NemEtiket current_label = string_to_enum2(HavaNemiSozel);
+    NemToprakEtiket current_label1 = string_to_enum4(ToprakNemikSozel);
+    switch (current_label)
+    {
+    case NEM_LABEL_COK_DUSUK:
+        switch (current_label1)
+        {
+        case NEMTOPRAK_LABEL_COK_DUSUK:
+            strcpy(water, "cokyuksek");
+            break;
+        case NEMTOPRAK_LABEL_DUSUK:
+            strcpy(water, "cokyuksek");
+            break;
+        case NEMTOPRAK_LABEL_ORTA:
+            strcpy(water, "yuksek");
+            break;
+        case NEMTOPRAK_LABEL_YUKSEK:
+            strcpy(water, "yuksek");
+            break;
+        case NEMTOPRAK_LABEL_COK_YUKSEK:
+            strcpy(water, "orta");
+            break;
+        }
+        break;
+    case NEM_LABEL_DUSUK:
+        switch (current_label1)
+        {
+        case NEMTOPRAK_LABEL_COK_DUSUK:
+            strcpy(water, "yuksek");
+            break;
+        case NEMTOPRAK_LABEL_DUSUK:
+            strcpy(water, "yuksek");
+            break;
+        case NEMTOPRAK_LABEL_ORTA:
+            strcpy(water, "yuksek");
+            break;
+        case NEMTOPRAK_LABEL_YUKSEK:
+            strcpy(water, "orta");
+            break;
+        case NEMTOPRAK_LABEL_COK_YUKSEK:
+            strcpy(water, "orta");
+            break;
+        }
+        break;
+    case NEM_LABEL_ORTA:
+        switch (current_label1)
+        {
+        case NEMTOPRAK_LABEL_COK_DUSUK:
+            strcpy(water, "yuksek");
+            break;
+        case NEMTOPRAK_LABEL_DUSUK:
+            strcpy(water, "orta");
+            break;
+        case NEMTOPRAK_LABEL_ORTA:
+            strcpy(water, "orta");
+            break;
+        case NEMTOPRAK_LABEL_YUKSEK:
+            strcpy(water, "orta");
+            break;
+        case NEMTOPRAK_LABEL_COK_YUKSEK:
+            strcpy(water, "dusuk");
+            break;
+        }
+        break;
+    case NEM_LABEL_YUKSEK:
+        switch (current_label1)
+        {
+        case NEMTOPRAK_LABEL_COK_DUSUK:
+            strcpy(water, "orta");
+            break;
+        case NEMTOPRAK_LABEL_DUSUK:
+            strcpy(water, "orta");
+            break;
+        case NEMTOPRAK_LABEL_ORTA:
+            strcpy(water, "dusuk");
+            break;
+        case NEMTOPRAK_LABEL_YUKSEK:
+            strcpy(water, "dusuk");
+            break;
+        case NEMTOPRAK_LABEL_COK_YUKSEK:
+            strcpy(water, "dusuk");
+            break;
+        }
+        break;
+    case NEM_LABEL_COK_YUKSEK:
+        switch (current_label1)
+        {
+        case NEMTOPRAK_LABEL_COK_DUSUK:
+            strcpy(water, "dusuk");
+            break;
+        case NEMTOPRAK_LABEL_DUSUK:
+            strcpy(water, "dusuk");
+            break;
+        case NEMTOPRAK_LABEL_ORTA:
+            strcpy(water, "dusuk");
+            break;
+        case NEMTOPRAK_LABEL_YUKSEK:
+            strcpy(water, "cokdusuk");
+            break;
+        case NEMTOPRAK_LABEL_COK_YUKSEK:
+            strcpy(water, "cokdusuk");
+            break;
+        }
+        break;
+    default:
+        printf("HATA: Tanimsiz Sicaklik Etiketi.\n");
+        break;
+    }
+}
+
+void kural_atayici5(const char *IsikSozel)
+{
+    IsikEtiket current_label = string_to_enum3(IsikSozel);
+    switch (current_label)
+    {
+    case ISIK_LABEL_COK_DUSUK:
+        strcpy(lighting, "cokyuksek");
+        break;
+    case ISIK_LABEL_DUSUK:
+        strcpy(lighting, "yuksek");
+        break;
+    case ISIK_LABEL_ORTA:
+        strcpy(lighting, "orta");
+        break;
+    case ISIK_LABEL_YUKSEK:
+        strcpy(lighting, "dusuk");
+        break;
+    case ISIK_LABEL_COK_YUKSEK:
+        strcpy(lighting, "cokdusuk");
+        break;
+    default:
+        printf("HATA: Tanimsiz Sicaklik Etiketi.\n");
+        break;
+    }
+}
+
+double trapmf2(double x, double a, double b, double c, double d)
+{
+    double mu_yukselen;
+    if (a <= x)
+    {
+        if (x <= b)
+        {
+            mu_yukselen = 1;
         }
     }
-    else mu_yukselen = (b == a) ? (x >= a ? 1.0 : 0.0) : (x - a) / (b - a);
+    else
+        mu_yukselen = (b == a) ? (x >= a ? 1.0 : 0.0) : (x - a) / (b - a);
     double mu_dusen = (d == c) ? (x <= d ? 1.0 : 0.0) : (d - x) / (d - c);
     double mu_ortak = min(mu_yukselen, mu_dusen);
     return max(0.0, min(1.0, mu_ortak));
 }
-double trapmf2yukselen(double x, double a, double b, double c, double d) {
-    double mu_yukselen=0; ;
-    if (b<=x&&x<=c)
+
+double trapmf2yukselen(double x, double a, double b, double c, double d)
+{
+    double mu_yukselen = 0;
+    ;
+    if (b <= x && x <= c)
     {
-      mu_yukselen=1;
+        mu_yukselen = 1;
     }
-    else mu_yukselen=(x-a)/(b-a);
-    if (mu_yukselen<0)
+    else
+        mu_yukselen = (x - a) / (b - a);
+    if (mu_yukselen < 0)
     {
-       mu_yukselen=0;
+        mu_yukselen = 0;
     }
-    if (mu_yukselen>1)
+    if (mu_yukselen > 1)
     {
-        mu_yukselen=1;
+        mu_yukselen = 1;
     }
     return mu_yukselen;
 }
-double trapmf2dusen(double x, double a, double b, double c, double d) {
-    double mu_dusen =0;
-    if (a<=x && x<=c)  
+double trapmf2dusen(double x, double a, double b, double c, double d)
+{
+    double mu_dusen = 0;
+    if (a <= x && x <= c)
     {
-         mu_dusen=1;
+        mu_dusen = 1;
     }
-     else mu_dusen=(d-x)/(d-c);
-     if (mu_dusen<0)
+    else
+        mu_dusen = (d - x) / (d - c);
+    if (mu_dusen < 0)
     {
-       mu_dusen=0;
+        mu_dusen = 0;
     }
-    if (mu_dusen>1)
+    if (mu_dusen > 1)
     {
-        mu_dusen=1;
+        mu_dusen = 1;
     }
     return mu_dusen;
 }
-double trimf(double x, double a, double b, double c) {
+double trimf(double x, double a, double b, double c)
+{
     double mu;
-    if (x <= a || x >= c) {
+    if (x <= a || x >= c)
+    {
         mu = 0.0;
-    } else if (x >= a && x <= b) {
-        mu = (x - a) / (b - a); 
-    } else if (x >= b && x <= c) {
-        mu = (c - x) / (c - b); 
-    } else {
+    }
+    else if (x >= a && x <= b)
+    {
+        mu = (x - a) / (b - a);
+    }
+    else if (x >= b && x <= c)
+    {
+        mu = (c - x) / (c - b);
+    }
+    else
+    {
         mu = 0.0;
     }
     return max(0.0, min(1.0, mu));
 }
 
-typedef struct {
+typedef struct
+{
     double cok_dusuk;
     double dusuk;
     double orta;
     double yuksek;
     double cok_yuksek;
 } FuzzyInput;
-FuzzyInput fuzzify_temperature_final(double temp) {
+FuzzyInput fuzzify_temperature_final(double temp)
+{
     FuzzyInput fi;
-    fi.cok_dusuk  = trapmf2dusen(temp, -10.0, -10.0, 0.0, 10.0);
-    fi.dusuk      = trimf(temp, 0.0, 7.5, 15.0);
-    fi.orta       = trimf(temp, 14.0, 20.0, 26.0);
-    fi.yuksek     = trimf(temp, 20.0, 30.0, 40.0);
+    fi.cok_dusuk = trapmf2dusen(temp, -10.0, -10.0, 0.0, 10.0);
+    fi.dusuk = trimf(temp, 0.0, 7.5, 15.0);
+    fi.orta = trimf(temp, 14.0, 20.0, 26.0);
+    fi.yuksek = trimf(temp, 20.0, 30.0, 40.0);
     fi.cok_yuksek = trapmf2yukselen(temp, 30.0, 40.0, 50.0, 50.0);
     return fi;
 }
-void print_fuzzification_results(double temp) {
+void print_fuzzification_results(double temp)
+{
     FuzzyInput fi = fuzzify_temperature_final(temp);
-            double sonuc=max1(fi.cok_dusuk,fi.dusuk,fi.orta,fi.yuksek,fi.cok_yuksek);
-            printf("en büyük değer =%lf\n]",sonuc);
+    double sonuc = max1(fi.cok_dusuk, fi.dusuk, fi.orta, fi.yuksek, fi.cok_yuksek);
+    printf("en büyük değer =%lf\n]", sonuc);
     printf(">>> SICAKLIK BULANIKLAŞTIRMA (Giriş: %.1f°C) <<<\n", temp);
     printf("1. ÇOK DÜŞÜK (mu_ÇD):  %.4f\n", fi.cok_dusuk);
     printf("2. DÜŞÜK (mu_D):       %.4f\n", fi.dusuk);
@@ -775,19 +865,21 @@ void print_fuzzification_results(double temp) {
     printf("5. ÇOK YÜKSEK (mu_ÇY): %.4f\n", fi.cok_yuksek);
     printf("---------------------------------------------------\n");
 }
-FuzzyInput fuzzify_huminidty_final(double humin) {
+FuzzyInput fuzzify_huminidty_final(double humin)
+{
     FuzzyInput nem;
-    nem.cok_dusuk  = trapmf2dusen(humin, 0.0, 0.0, 20.0, 40.0);
-    nem.dusuk      = trimf(humin, 20.0, 39.5, 59.0);
-    nem.orta       = trimf(humin, 50.0, 60.0, 70.0);
-    nem.yuksek     = trimf(humin, 60.0, 75.0, 90.0);
+    nem.cok_dusuk = trapmf2dusen(humin, 0.0, 0.0, 20.0, 40.0);
+    nem.dusuk = trimf(humin, 20.0, 39.5, 59.0);
+    nem.orta = trimf(humin, 50.0, 60.0, 70.0);
+    nem.yuksek = trimf(humin, 60.0, 75.0, 90.0);
     nem.cok_yuksek = trapmf2yukselen(humin, 80.0, 90.0, 100.0, 100.0);
     return nem;
 }
-void print_fuzzification_results2(double humin) {
+void print_fuzzification_results2(double humin)
+{
     FuzzyInput nem = fuzzify_huminidty_final(humin);
-    double sonuc=max2(nem.cok_dusuk,nem.dusuk,nem.orta,nem.yuksek,nem.cok_yuksek);
-            printf("en büyük değer =%lf\n]",sonuc);
+    double sonuc = max2(nem.cok_dusuk, nem.dusuk, nem.orta, nem.yuksek, nem.cok_yuksek);
+    printf("en büyük değer =%lf\n]", sonuc);
     printf(">>> HAVA NEMİ BULANIKLAŞTIRMA (Giriş: %.1fnem) <<<\n", humin);
     printf("1. ÇOK DÜŞÜK (mu_ÇD):  %.4f\n", nem.cok_dusuk);
     printf("2. DÜŞÜK (mu_D):       %.4f\n", nem.dusuk);
@@ -796,19 +888,21 @@ void print_fuzzification_results2(double humin) {
     printf("5. ÇOK YÜKSEK (mu_ÇY): %.4f\n", nem.cok_yuksek);
     printf("---------------------------------------------------\n");
 }
-FuzzyInput fuzzify_isik_final(double isiksiddeti) {
+FuzzyInput fuzzify_isik_final(double isiksiddeti)
+{
     FuzzyInput isik;
-    isik.cok_dusuk  = trapmf2dusen(isiksiddeti, 0.0, 0.0, 2500.0, 5000.0);
-    isik.dusuk      = trimf(isiksiddeti, 4000.0, 6500.0, 9000.0);
-    isik.orta       = trimf(isiksiddeti, 8000.0, 10000.0, 12000.0);
-    isik.yuksek     = trimf(isiksiddeti, 11000.0, 13500.0, 16000.0);
+    isik.cok_dusuk = trapmf2dusen(isiksiddeti, 0.0, 0.0, 2500.0, 5000.0);
+    isik.dusuk = trimf(isiksiddeti, 4000.0, 6500.0, 9000.0);
+    isik.orta = trimf(isiksiddeti, 8000.0, 10000.0, 12000.0);
+    isik.yuksek = trimf(isiksiddeti, 11000.0, 13500.0, 16000.0);
     isik.cok_yuksek = trapmf2yukselen(isiksiddeti, 15000.0, 17500.0, 20000.0, 20000.0);
     return isik;
 }
-void print_fuzzification_results3(double isiksiddeti) {
+void print_fuzzification_results3(double isiksiddeti)
+{
     FuzzyInput isik = fuzzify_isik_final(isiksiddeti);
-    double sonuc=max3(isik.cok_dusuk,isik.dusuk,isik.orta,isik.yuksek,isik.cok_yuksek);
-            printf("en büyük değer =%lf\n]",sonuc);
+    double sonuc = max3(isik.cok_dusuk, isik.dusuk, isik.orta, isik.yuksek, isik.cok_yuksek);
+    printf("en büyük değer =%lf\n]", sonuc);
     printf(">>> IŞIK ŞİDDETİ BULANIKLAŞTIRMA (Giriş: %.1fişikşiddeti) <<<\n", isiksiddeti);
     printf("1. ÇOK DÜŞÜK (mu_ÇD):  %f\n", isik.cok_dusuk);
     printf("2. DÜŞÜK (mu_D):       %f\n", isik.dusuk);
@@ -817,19 +911,21 @@ void print_fuzzification_results3(double isiksiddeti) {
     printf("5. ÇOK YÜKSEK (mu_ÇY): %f\n", isik.cok_yuksek);
     printf("---------------------------------------------------\n");
 }
-FuzzyInput fuzzify_topraknemi_final(double topraknemi) {
+FuzzyInput fuzzify_topraknemi_final(double topraknemi)
+{
     FuzzyInput topnemi;
-    topnemi.cok_dusuk  = trapmf2dusen(topraknemi, 0.0, 0.0, 20.0, 40.0);
-    topnemi.dusuk      = trimf(topraknemi, 30.0, 49.5, 69.0);
-    topnemi.orta       = trimf(topraknemi, 60.0, 69.5, 79.0);
-    topnemi.yuksek     = trimf(topraknemi, 70.0, 80.0, 90.0);
+    topnemi.cok_dusuk = trapmf2dusen(topraknemi, 0.0, 0.0, 20.0, 40.0);
+    topnemi.dusuk = trimf(topraknemi, 30.0, 49.5, 69.0);
+    topnemi.orta = trimf(topraknemi, 60.0, 69.5, 79.0);
+    topnemi.yuksek = trimf(topraknemi, 70.0, 80.0, 90.0);
     topnemi.cok_yuksek = trapmf2yukselen(topraknemi, 80.0, 90.0, 100.0, 100.0);
     return topnemi;
 }
-void print_fuzzification_results4(double topraknemi) {
+void print_fuzzification_results4(double topraknemi)
+{
     FuzzyInput topnemi = fuzzify_topraknemi_final(topraknemi);
-     double sonuc=max4(topnemi.cok_dusuk,topnemi.dusuk,topnemi.orta,topnemi.yuksek,topnemi.cok_yuksek);
-            printf("en büyük değer =%lf\n]",sonuc);
+    double sonuc = max4(topnemi.cok_dusuk, topnemi.dusuk, topnemi.orta, topnemi.yuksek, topnemi.cok_yuksek);
+    printf("en büyük değer =%lf\n]", sonuc);
     printf(">>> TOPRAK NEMİ BULANIKLAŞTIRMA (Giriş: %.1ftopraknemi) <<<\n", topraknemi);
     printf("1. ÇOK DÜŞÜK (mu_ÇD):  %f\n", topnemi.cok_dusuk);
     printf("2. DÜŞÜK (mu_D):       %f\n", topnemi.dusuk);
@@ -838,46 +934,47 @@ void print_fuzzification_results4(double topraknemi) {
     printf("5. ÇOK YÜKSEK (mu_ÇY): %f\n", topnemi.cok_yuksek);
     printf("---------------------------------------------------\n");
 }
-int main() {
-     int x=0;
-    while (x<1)
+int main()
+{
+    int x = 0;
+    while (x < 1)
     {
-    float sensordengelenveri=0.0f;
-    int sensordengelenem=0;
-    int sensördengelenisik=0;
-    int sensördengelentopraknemi=0;
-    /* */printf("sicaklik değerini giriniz=");
-    scanf("%f",&sensordengelenveri);
-    printf("%f\n",sensordengelenveri);
-    print_fuzzification_results(sensordengelenveri);
-    
-    printf("nem değerini giriniz=");
-    scanf("%d",&sensordengelenem);
-    printf("%d\n",sensordengelenem);
-    print_fuzzification_results2(sensordengelenem);
-    kural_atayici(SicaklikSozel,HavaNemiSozel);
-    kural_atayici2(SicaklikSozel,HavaNemiSozel);
-    printf("isik siddeti değerini giriniz=");
-    scanf("%d",&sensördengelenisik);
-    printf("%d\n",sensördengelenisik);
-    print_fuzzification_results3(sensördengelenisik); 
-    kural_atayici3(SicaklikSozel,IsikSozel);
-    printf("toprak nemini değerini giriniz=");
-    scanf("%d",&sensördengelentopraknemi);
-    printf("%d\n",sensördengelentopraknemi);
-    print_fuzzification_results4(sensördengelentopraknemi);
-    kural_atayici4(HavaNemiSozel,ToprakNemikSozel);
-    kural_atayici5(IsikSozel);
-    printf("sicaklik cikisi=");
-    printf("%s\n",cikis);
-    printf("soğutma cikisi=");
-    printf("%s\n",Cooling);
-     printf("gölgelendirme cikisi=");
-    printf("%s\n",shadow);
-    printf("sulama cikisi=");
-    printf("%s\n",water);
-    printf("isiklandirma cikisi=");
-    printf("%s\n",lighting);
+        float sensordengelenveri = 0.0f;
+        int sensordengelenem = 0;
+        int sensördengelenisik = 0;
+        int sensördengelentopraknemi = 0;
+        /* */ printf("sicaklik değerini giriniz=");
+        scanf("%f", &sensordengelenveri);
+        printf("%f\n", sensordengelenveri);
+        print_fuzzification_results(sensordengelenveri);
+
+        printf("nem değerini giriniz=");
+        scanf("%d", &sensordengelenem);
+        printf("%d\n", sensordengelenem);
+        print_fuzzification_results2(sensordengelenem);
+        kural_atayici(SicaklikSozel, HavaNemiSozel);
+        kural_atayici2(SicaklikSozel, HavaNemiSozel);
+        printf("isik siddeti değerini giriniz=");
+        scanf("%d", &sensördengelenisik);
+        printf("%d\n", sensördengelenisik);
+        print_fuzzification_results3(sensördengelenisik);
+        kural_atayici3(SicaklikSozel, IsikSozel);
+        printf("toprak nemini değerini giriniz=");
+        scanf("%d", &sensördengelentopraknemi);
+        printf("%d\n", sensördengelentopraknemi);
+        print_fuzzification_results4(sensördengelentopraknemi);
+        kural_atayici4(HavaNemiSozel, ToprakNemikSozel);
+        kural_atayici5(IsikSozel);
+        printf("sicaklik cikisi=");
+        printf("%s\n", cikis);
+        printf("soğutma cikisi=");
+        printf("%s\n", Cooling);
+        printf("gölgelendirme cikisi=");
+        printf("%s\n", shadow);
+        printf("sulama cikisi=");
+        printf("%s\n", water);
+        printf("isiklandirma cikisi=");
+        printf("%s\n", lighting);
     }
     return 0;
 }
