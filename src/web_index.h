@@ -40,22 +40,22 @@ const char index_html[] PROGMEM = R"rawliteral(
 <body>
 
 <div class="container">
-  <h1>🌱 Akıllı Sera Fuzzy Kontrol Paneli</h1>
+  <h1>🌱 Bulanık Mantık Tabanlı Sera Otomasyon Paneli </h1>
 
   <div class="section">
-    <h2>1. Giriş Değişkenleri (Simülasyon Ayarları)</h2>
+    <h2>1. Giriş Değişkenleri</h2>
     <div class="grid-inputs">
       <div class="input-group"><label>Sıcaklık (°C)</label><input type="number" id="in_temp" value="25"></div>
       <div class="input-group"><label>Hava Nemi (%)</label><input type="number" id="in_hum" value="60"></div>
       <div class="input-group"><label>Işık (Lux)</label><input type="number" id="in_light" value="5000"></div>
       <div class="input-group"><label>Toprak Nemi (%)</label><input type="number" id="in_soil" value="40"></div>
     </div>
-    <button class="btn" onclick="sendInputs()">Tüm Değerleri Uygula</button>
-    <button class="btn" style="margin-left:8px; background:#ff9800;" onclick="pullInputsNow()">Cihazdan Eşitle</button>
+    <!-- <button class="btn" onclick="sendInputs()">Tüm Değerleri Uygula</button>
+    <button class="btn" style="margin-left:8px; background:#ff9800;" onclick="pullInputsNow()">Cihazdan Eşitle</button> -->
   </div>
 
   <div class="section">
-    <h2>2. Giriş Üyelik Değerleri (Fuzzification)</h2>
+    <h2>2. Giriş Üyelik Değerleri (Bulanıklaştırma)</h2>
     <table id="membershipTable">
       <thead>
         <tr>
@@ -79,7 +79,6 @@ const char index_html[] PROGMEM = R"rawliteral(
       <thead>
         <tr>
           <th>Çıkış Birimi</th>
-          <th>Üyelik (0-1)</th>
           <th>Hesaplanan Çıkış</th>
           <th>Bulanık Etiket</th>
         </tr>
@@ -106,14 +105,15 @@ const char index_html[] PROGMEM = R"rawliteral(
 <script>
   // Definition of variable names for mapping
   const inputNames = ["Sıcaklık", "Hava Nemi", "Işık Şiddeti", "Toprak Nemi"];
-  const outputNames = ["Isıtma", "Soğutma", "Gölgelendirme", "Sulama", "Işıklandırma"];
-  const outputUnits = ["kW", "Micron", "cm", "Lt", "Lux"];
+  const outputNames = ["Işıklandırma", "Sulama", "Isıtma", "Gölgelendirme", "Soğutma"];
+  const outputUnits = ["Lux", "Lt", "kW", "m", "Micron"];
 
   // Fetch data every 1 second
   setInterval(getData, 1000);
 
   function getData() {
-    fetch('/data')
+    // cache-busting & no-store to avoid stale responses
+    fetch('/data?ts=' + Date.now(), { cache: 'no-store' })
       .then(response => response.json())
       .then(data => {
         updateMemberships(data.inputs_m);
@@ -128,36 +128,41 @@ const char index_html[] PROGMEM = R"rawliteral(
       .catch(err => console.warn('getData fetch error', err));
   }
 
-  function sendInputs() {
-    const params = new URLSearchParams();
-    params.append('temp', document.getElementById('in_temp').value);
-    params.append('hum', document.getElementById('in_hum').value);
-    params.append('light', document.getElementById('in_light').value);
-    params.append('soil', document.getElementById('in_soil').value);
+  // function sendInputs() {
+  //   const params = new URLSearchParams();
+  //   params.append('temp', document.getElementById('in_temp').value);
+  //   params.append('hum', document.getElementById('in_hum').value);
+  //   params.append('light', document.getElementById('in_light').value);
+  //   params.append('soil', document.getElementById('in_soil').value);
 
-    fetch('/set?' + params.toString())
-      .then(res => res.text())
-      .then(text => alert(text));
-  }
+  //   fetch('/set?' + params.toString())
+  //     .then(res => res.text())
+  //     .then(text => alert(text));
+  // }
 
   // Pull current `rawInputs` from the device and populate the dashboard inputs
   function pullInputs(raw_inputs) {
     if (!raw_inputs || raw_inputs.length < 4) return;
-    document.getElementById('in_temp').value = raw_inputs[0];
-    document.getElementById('in_hum').value  = raw_inputs[1];
-    document.getElementById('in_light').value = raw_inputs[2];
-    document.getElementById('in_soil').value = raw_inputs[3];
+    // Only update fields that are not currently focused so user's typing isn't interrupted
+    const elTemp = document.getElementById('in_temp');
+    const elHum  = document.getElementById('in_hum');
+    const elLight = document.getElementById('in_light');
+    const elSoil = document.getElementById('in_soil');
+    if (document.activeElement !== elTemp) elTemp.value = raw_inputs[0];
+    if (document.activeElement !== elHum)  elHum.value  = raw_inputs[1];
+    if (document.activeElement !== elLight) elLight.value = raw_inputs[2];
+    if (document.activeElement !== elSoil) elSoil.value = raw_inputs[3];
   }
 
   // Manual fetch + apply (used by the button)
-  function pullInputsNow() {
-    fetch('/data')
-      .then(response => response.json())
-      .then(d => {
-        if (d && Array.isArray(d.raw_inputs)) pullInputs(d.raw_inputs);
-      })
-      .catch(err => console.warn('pullInputsNow error', err));
-  }
+  // function pullInputsNow() {
+  //   fetch('/data?ts=' + Date.now(), { cache: 'no-store' })
+  //     .then(response => response.json())
+  //     .then(d => {
+  //       if (d && Array.isArray(d.raw_inputs)) pullInputs(d.raw_inputs);
+  //     })
+  //     .catch(err => console.warn('pullInputsNow error', err));
+  // }
 
 function updateMemberships(matrix) {
     let html = "";
@@ -176,7 +181,7 @@ function updateMemberships(matrix) {
       for(let j=0; j<5; j++) {
         let val = matrix[i][j];
         // If this cell equals the row's maximum (and is > 0 to avoid highlighting empty rows), highlight it
-        let style = (val === maxVal && val > 0) ? "background:#c8e6c9; font-weight:bold;" : "";
+        let style = (val === maxVal || val > 0) ? "background:#c8e6c9; font-weight:bold;" : "";
         
         html += `<td style="${style}">${val.toFixed(2)}</td>`;
       }
@@ -202,7 +207,6 @@ function updateMemberships(matrix) {
     for(let i=0; i<outputNames.length; i++) {
       html += `<tr>
                 <td>${outputNames[i]}</td>
-                <td>${outputs[i].membership.toFixed(2)}</td>
                 <td><b>${outputs[i].value.toFixed(1)} ${outputUnits[i]}</b></td>
                 <td>${outputs[i].label}</td>
                </tr>`;

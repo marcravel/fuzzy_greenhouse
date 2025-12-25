@@ -11,7 +11,7 @@ public:
     void handleClient();
     
     // Updates the state that will be served to the client
-    void updateState(const SensorReadings& sensors, const SystemFuzzyState& fuzzy, const SystemOutputs& outs);
+    void updateState(const SensorReadings& sensors, const SystemFuzzyState& fuzzy, const FuzzyResults& fuzzyRes, const SystemOutputs& outs);
     
     // Updates the inputs from the web UI (manual override)
     // Returns true if new inputs were received
@@ -23,6 +23,7 @@ private:
     // Cache of current state to serve
     SensorReadings currentSensors;
     SystemFuzzyState currentFuzzy;
+    FuzzyResults currentFuzzyRes;
     SystemOutputs currentOutputs;
     
     bool newManualInputAvailable;

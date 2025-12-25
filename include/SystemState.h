@@ -18,8 +18,8 @@ struct FuzzyMembership {
     float orta;       // Medium
     float yuksek;     // High
     float cok_yuksek; // Very High
-    String sozel_ifade; // En iyi terim
 };
+// Primary and secondary Membership value and label 
 
 // Container for all fuzzy results
 struct SystemFuzzyState {
@@ -29,9 +29,22 @@ struct SystemFuzzyState {
     FuzzyMembership soil_mu;
 };
 
+struct FuzzyResult {
+    float primary_mu;
+    char primary_label[50];
+    float secondary_mu;
+    char secondary_label[50];
+};
+
+struct FuzzyResults {
+    FuzzyResult temp_result;
+    FuzzyResult hum_result;
+    FuzzyResult light_result;
+    FuzzyResult soil_result;
+};
+
 // Output State
 struct SystemOutput {
-    float membership;
     float value;
     String label;
 };

@@ -31,9 +31,10 @@ void WebServerManager::handleClient() {
     server.handleClient();
 }
 
-void WebServerManager::updateState(const SensorReadings& sensors, const SystemFuzzyState& fuzzy, const SystemOutputs& outs) {
+void WebServerManager::updateState(const SensorReadings& sensors, const SystemFuzzyState& fuzzy, const FuzzyResults& fuzzyRes, const SystemOutputs& outs) {
     currentSensors = sensors;
     currentFuzzy = fuzzy;
+    currentFuzzyRes = fuzzyRes;
     currentOutputs = outs;
 }
 
@@ -102,18 +103,18 @@ void WebServerManager::handleData() {
     // "inputs_active" (Best label for each input)
     json += "\"inputs_active\":[";
     
-    auto appendActive = [&](float val, const FuzzyMembership& mu, bool lastItem) {
+    auto appendActive = [&](float val, const FuzzyMembership& mu, char* label, bool lastItem) {
         json += "{";
         json += "\"val\":" + String(val) + ",";
-        json += "\"label\":\"" + mu.sozel_ifade + "\"";
+        json += "\"label\":\"" + String(label) + "\"";
         json += "}";
         if(!lastItem) json += ",";
     };
 
-    appendActive(currentSensors.temperature, currentFuzzy.temp_mu, false);
-    appendActive(currentSensors.humidity, currentFuzzy.hum_mu, false);
-    appendActive(currentSensors.lightLevel, currentFuzzy.light_mu, false);
-    appendActive(currentSensors.soilMoisture, currentFuzzy.soil_mu, true);
+    appendActive(currentSensors.temperature, currentFuzzy.temp_mu, currentFuzzyRes.temp_result.primary_label, false);
+    appendActive(currentSensors.humidity, currentFuzzy.hum_mu, currentFuzzyRes.hum_result.primary_label, false);
+    appendActive(currentSensors.lightLevel, currentFuzzy.light_mu, currentFuzzyRes.light_result.primary_label, false);
+    appendActive(currentSensors.soilMoisture, currentFuzzy.soil_mu, currentFuzzyRes.soil_result.primary_label, true);
 
     json += "],";
 
@@ -121,7 +122,6 @@ void WebServerManager::handleData() {
     json += "\"outputs\":[";
     for(int i=0; i<5; i++){
         json += "{";
-        json += "\"membership\":" + String(currentOutputs.outputs[i].membership) + ",";
         json += "\"value\":" + String(currentOutputs.outputs[i].value) + ",";
         json += "\"label\":\"" + currentOutputs.outputs[i].label + "\"";
         json += "}";

@@ -4,6 +4,7 @@
 #include "SensorManager.h"
 #include "FuzzyLogic.h"
 #include "WebServerManager.h"
+#include "ActuatorController.h"
 
 class SystemController {
 public:
@@ -15,10 +16,12 @@ private:
     SensorManager sensors;
     FuzzyLogic fuzzy;
     WebServerManager webServer;
+    ActuatorController actuator;
 
     // Simulation/Cache state
     SensorReadings currentReadings;
     SystemFuzzyState currentFuzzyState;
+    FuzzyResults currentFuzzyResults;
     SystemDecisions currentDecisions;
     SystemOutputs currentOutputs;
     
@@ -26,7 +29,7 @@ private:
     
     // Logic helpers
     void processLogic();
-    void generateOutputs(); // Currently simulation logic
+    void generateOutputs(SystemDecisions decisions);
 };
 
 #endif // SYSTEM_CONTROLLER_H
