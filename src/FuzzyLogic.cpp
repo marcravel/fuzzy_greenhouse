@@ -302,105 +302,55 @@ void FuzzyLogic::evaluate_rules_temp_light_shadow(const char *SicaklikSozel,cons
     switch (current_label)
     {
         case SICAKLIK_LABEL_COK_DUSUK:
-        switch (current_label1)
-        {
-        case ISIK_LABEL_COK_DUSUK:
-           strcpy(shadow,"cok_dusuk");
-            break;
-        case ISIK_LABEL_DUSUK:
-           strcpy(shadow,"cok_dusuk");
-            break;
-        case ISIK_LABEL_ORTA:
-           strcpy(shadow,"dusuk");
-            break;
-            case ISIK_LABEL_YUKSEK:
-           strcpy(shadow,"orta");
-            break;
-            case ISIK_LABEL_COK_YUKSEK:
-           strcpy(shadow,"orta");
-            break;
-        }
+            switch (current_label1)
+            {
+                case ISIK_LABEL_COK_DUSUK: strcpy(shadow,"cok_dusuk"); break;
+                case ISIK_LABEL_DUSUK: strcpy(shadow,"cok_dusuk"); break;
+                case ISIK_LABEL_ORTA: strcpy(shadow,"dusuk"); break;
+                case ISIK_LABEL_YUKSEK: strcpy(shadow,"orta"); break;
+                case ISIK_LABEL_COK_YUKSEK: strcpy(shadow,"orta"); break;
+                }
             break;
         case SICAKLIK_LABEL_DUSUK:
-        switch (current_label1)
-        {
-        case ISIK_LABEL_COK_DUSUK:
-           strcpy(shadow,"cok_dusuk");
+            switch (current_label1)
+            {
+                case ISIK_LABEL_COK_DUSUK: strcpy(shadow,"cok_dusuk"); break;
+                case ISIK_LABEL_DUSUK: strcpy(shadow,"dusuk"); break;
+                case ISIK_LABEL_ORTA: strcpy(shadow,"dusuk"); break;
+                case ISIK_LABEL_YUKSEK: strcpy(shadow,"orta"); break;
+                case ISIK_LABEL_COK_YUKSEK: strcpy(shadow,"yuksek"); break;
+            }
             break;
-        case ISIK_LABEL_DUSUK:
-           strcpy(shadow,"dusuk");
-            break;
-        case ISIK_LABEL_ORTA:
-           strcpy(shadow,"dusuk");
-            break;
-            case ISIK_LABEL_YUKSEK:
-           strcpy(shadow,"orta");
-            break;
-            case ISIK_LABEL_COK_YUKSEK:
-           strcpy(shadow,"yuksek");
-            break;
-        }
-        break;
         case SICAKLIK_LABEL_ORTA:
-          switch (current_label1)
-        {
-        case ISIK_LABEL_COK_DUSUK:
-           strcpy(shadow,"cok_dusuk");
+            switch (current_label1)
+            {
+                case ISIK_LABEL_COK_DUSUK: strcpy(shadow,"cok_dusuk"); break;
+                case ISIK_LABEL_DUSUK: strcpy(shadow,"dusuk"); break;
+                case ISIK_LABEL_ORTA: strcpy(shadow,"orta"); break;
+                case ISIK_LABEL_YUKSEK: strcpy(shadow,"orta"); break;
+                case ISIK_LABEL_COK_YUKSEK: strcpy(shadow,"yuksek"); break;
+            }
             break;
-        case ISIK_LABEL_DUSUK:
-           strcpy(shadow,"dusuk");
+        case SICAKLIK_LABEL_YUKSEK:
+            switch (current_label1)
+            {
+                case ISIK_LABEL_COK_DUSUK: strcpy(shadow,"dusuk"); break;
+                case ISIK_LABEL_DUSUK: strcpy(shadow,"dusuk"); break;
+                case ISIK_LABEL_ORTA: strcpy(shadow,"orta"); break;
+                case ISIK_LABEL_YUKSEK: strcpy(shadow,"yuksek"); break;
+                case ISIK_LABEL_COK_YUKSEK: strcpy(shadow,"yuksek"); break;
+            }
             break;
-        case ISIK_LABEL_ORTA:
-           strcpy(shadow,"orta");
+        case SICAKLIK_LABEL_COK_YUKSEK:
+            switch (current_label1)
+            {
+            case ISIK_LABEL_COK_DUSUK: strcpy(shadow,"dusuk"); break;
+            case ISIK_LABEL_DUSUK: strcpy(shadow,"orta"); break;
+            case ISIK_LABEL_ORTA: strcpy(shadow,"orta"); break;
+            case ISIK_LABEL_YUKSEK: strcpy(shadow,"yuksek"); break;
+            case ISIK_LABEL_COK_YUKSEK: strcpy(shadow,"cok_yuksek"); break;
+            }
             break;
-            case ISIK_LABEL_YUKSEK:
-           strcpy(shadow,"orta");
-            break;
-            case ISIK_LABEL_COK_YUKSEK:
-           strcpy(shadow,"yuksek");
-            break;
-        }
-        break;
-         case SICAKLIK_LABEL_YUKSEK:
-          switch (current_label1)
-        {
-        case ISIK_LABEL_COK_DUSUK:
-           strcpy(shadow,"dusuk");
-            break;
-        case ISIK_LABEL_DUSUK:
-           strcpy(shadow,"dusuk");
-            break;
-        case ISIK_LABEL_ORTA:
-           strcpy(shadow,"orta");
-            break;
-            case ISIK_LABEL_YUKSEK:
-           strcpy(shadow,"yuksek");
-            break;
-            case ISIK_LABEL_COK_YUKSEK:
-           strcpy(shadow,"yuksek");
-            break;
-        }
-        break;
-         case SICAKLIK_LABEL_COK_YUKSEK:
-          switch (current_label1)
-        {
-        case ISIK_LABEL_COK_DUSUK:
-           strcpy(shadow,"dusuk");
-            break;
-        case ISIK_LABEL_DUSUK:
-           strcpy(shadow,"orta");
-            break;
-        case ISIK_LABEL_ORTA:
-           strcpy(shadow,"orta");
-            break;
-            case ISIK_LABEL_YUKSEK:
-           strcpy(shadow,"yuksek");
-            break;
-            case ISIK_LABEL_COK_YUKSEK:
-           strcpy(shadow,"cok_yuksek");
-            break;
-        }
-        break;
         default:
         printf("Sicaklik etiketi: %s\n",SicaklikSozel);
         printf("HATA: Tanimsiz Sicaklik Etiketi.\n");
@@ -414,105 +364,55 @@ void FuzzyLogic::evaluate_rules_temp_hum_cooling(const char *SicaklikSozel,const
     switch (current_label)
     {
         case SICAKLIK_LABEL_COK_DUSUK:
-        switch (current_label1)
-        {
-        case NEM_LABEL_COK_DUSUK:
-           strcpy(Cooling,"cok_dusuk");
-            break;
-        case NEM_LABEL_DUSUK:
-           strcpy(Cooling,"cok_dusuk");
-            break;
-        case NEM_LABEL_ORTA:
-           strcpy(Cooling,"cok_dusuk");
-            break;
-            case NEM_LABEL_YUKSEK:
-           strcpy(Cooling,"cok_dusuk");
-            break;
-            case NEM_LABEL_COK_YUKSEK:
-           strcpy(Cooling,"cok_dusuk");
-            break;
+            switch (current_label1)
+            {
+            case NEM_LABEL_COK_DUSUK: strcpy(Cooling,"cok_dusuk"); break;
+            case NEM_LABEL_DUSUK: strcpy(Cooling,"cok_dusuk"); break;
+            case NEM_LABEL_ORTA: strcpy(Cooling,"cok_dusuk"); break;
+            case NEM_LABEL_YUKSEK: strcpy(Cooling,"cok_dusuk"); break;
+            case NEM_LABEL_COK_YUKSEK: strcpy(Cooling,"cok_dusuk"); break;
         }
             break;
         case SICAKLIK_LABEL_DUSUK:
-        switch (current_label1)
-        {
-        case NEM_LABEL_COK_DUSUK:
-           strcpy(Cooling,"dusuk");
+            switch (current_label1)
+            {
+            case NEM_LABEL_COK_DUSUK: strcpy(Cooling,"dusuk"); break;
+            case NEM_LABEL_DUSUK: strcpy(Cooling,"dusuk"); break;
+            case NEM_LABEL_ORTA: strcpy(Cooling,"dusuk"); break;
+            case NEM_LABEL_YUKSEK: strcpy(Cooling,"dusuk"); break;
+            case NEM_LABEL_COK_YUKSEK: strcpy(Cooling,"dusuk"); break;
+            }
             break;
-        case NEM_LABEL_DUSUK:
-           strcpy(Cooling,"dusuk");
-            break;
-        case NEM_LABEL_ORTA:
-           strcpy(Cooling,"dusuk");
-            break;
-            case NEM_LABEL_YUKSEK:
-           strcpy(Cooling,"dusuk");
-            break;
-            case NEM_LABEL_COK_YUKSEK:
-           strcpy(Cooling,"dusuk");
-            break;
-        }
-        break;
         case SICAKLIK_LABEL_ORTA:
-          switch (current_label1)
-        {
-        case NEM_LABEL_COK_DUSUK:
-           strcpy(Cooling,"dusuk");
+            switch (current_label1)
+            {
+            case NEM_LABEL_COK_DUSUK: strcpy(Cooling,"dusuk"); break;
+            case NEM_LABEL_DUSUK: strcpy(Cooling,"orta"); break;
+            case NEM_LABEL_ORTA: strcpy(Cooling,"orta"); break;
+            case NEM_LABEL_YUKSEK: strcpy(Cooling,"orta"); break;
+            case NEM_LABEL_COK_YUKSEK: strcpy(Cooling,"orta"); break;
+            }
             break;
-        case NEM_LABEL_DUSUK:
-           strcpy(Cooling,"orta");
-            break;
-        case NEM_LABEL_ORTA:
-           strcpy(Cooling,"orta");
-            break;
-            case NEM_LABEL_YUKSEK:
-           strcpy(Cooling,"orta");
-            break;
-            case NEM_LABEL_COK_YUKSEK:
-           strcpy(Cooling,"orta");
-            break;
-        }
-        break;
          case SICAKLIK_LABEL_YUKSEK:
-          switch (current_label1)
-        {
-        case NEM_LABEL_COK_DUSUK:
-           strcpy(Cooling,"orta");
+            switch (current_label1)
+            {
+            case NEM_LABEL_COK_DUSUK: strcpy(Cooling,"orta"); break;
+            case NEM_LABEL_DUSUK: strcpy(Cooling,"orta"); break;
+            case NEM_LABEL_ORTA: strcpy(Cooling,"yuksek"); break;
+            case NEM_LABEL_YUKSEK: strcpy(Cooling,"yuksek"); break;
+            case NEM_LABEL_COK_YUKSEK: strcpy(Cooling,"yuksek"); break;
+            }
             break;
-        case NEM_LABEL_DUSUK:
-           strcpy(Cooling,"orta");
-            break;
-        case NEM_LABEL_ORTA:
-           strcpy(Cooling,"yuksek");
-            break;
-            case NEM_LABEL_YUKSEK:
-           strcpy(Cooling,"yuksek");
-            break;
-            case NEM_LABEL_COK_YUKSEK:
-           strcpy(Cooling,"yuksek");
-            break;
-        }
-        break;
          case SICAKLIK_LABEL_COK_YUKSEK:
-          switch (current_label1)
-        {
-        case NEM_LABEL_COK_DUSUK:
-           strcpy(Cooling,"yuksek");
+            switch (current_label1)
+            {
+            case NEM_LABEL_COK_DUSUK: strcpy(Cooling,"yuksek"); break;
+            case NEM_LABEL_DUSUK: strcpy(Cooling,"yuksek"); break;
+            case NEM_LABEL_ORTA: strcpy(Cooling,"yuksek"); break;
+            case NEM_LABEL_YUKSEK: strcpy(Cooling,"cok_yuksek"); break;
+            case NEM_LABEL_COK_YUKSEK: strcpy(Cooling,"cok_yuksek"); break;
+            }
             break;
-        case NEM_LABEL_DUSUK:
-           strcpy(Cooling,"yuksek");
-            break;
-        case NEM_LABEL_ORTA:
-           strcpy(Cooling,"yuksek");
-            break;
-            case NEM_LABEL_YUKSEK:
-           strcpy(Cooling,"cok_yuksek");
-            break;
-            case NEM_LABEL_COK_YUKSEK:
-           strcpy(Cooling,"cok_yuksek");
-            break;
-        }
-        break;
         default:
             printf("Sicaklik etiketi: %s\n",SicaklikSozel);
             printf("HATA: Tanimsiz Sicaklik Etiketi.\n");
@@ -526,105 +426,55 @@ void FuzzyLogic::evaluate_rules_temp_hum_heating(const char *SicaklikSozel,const
     switch (current_label)
     {
         case SICAKLIK_LABEL_COK_DUSUK:
-        switch (current_label1)
-        {
-        case NEM_LABEL_COK_DUSUK:
-           strcpy(cikis,"cok_yuksek");
-            break;
-        case NEM_LABEL_DUSUK:
-           strcpy(cikis,"cok_yuksek");
-            break;
-        case NEM_LABEL_ORTA:
-           strcpy(cikis,"yuksek");
-            break;
-            case NEM_LABEL_YUKSEK:
-           strcpy(cikis,"yuksek");
-            break;
-            case NEM_LABEL_COK_YUKSEK:
-           strcpy(cikis,"yuksek");
-            break;
-        }
+            switch (current_label1)
+            {
+            case NEM_LABEL_COK_DUSUK: strcpy(cikis,"cok_yuksek"); break;
+            case NEM_LABEL_DUSUK: strcpy(cikis,"cok_yuksek"); break;
+            case NEM_LABEL_ORTA: strcpy(cikis,"yuksek"); break;
+            case NEM_LABEL_YUKSEK: strcpy(cikis,"yuksek"); break;
+            case NEM_LABEL_COK_YUKSEK: strcpy(cikis,"yuksek"); break;
+            }
             break;
         case SICAKLIK_LABEL_DUSUK:
-        switch (current_label1)
-        {
-        case NEM_LABEL_COK_DUSUK:
-           strcpy(cikis,"yuksek");
+            switch (current_label1)
+            {
+            case NEM_LABEL_COK_DUSUK: strcpy(cikis,"yuksek"); break;
+            case NEM_LABEL_DUSUK: strcpy(cikis,"yuksek"); break;
+            case NEM_LABEL_ORTA: strcpy(cikis,"yuksek"); break;
+            case NEM_LABEL_YUKSEK: strcpy(cikis,"orta"); break;
+            case NEM_LABEL_COK_YUKSEK: strcpy(cikis,"orta"); break;
+            }
             break;
-        case NEM_LABEL_DUSUK:
-           strcpy(cikis,"yuksek");
-            break;
-        case NEM_LABEL_ORTA:
-           strcpy(cikis,"yuksek");
-            break;
-            case NEM_LABEL_YUKSEK:
-           strcpy(cikis,"orta");
-            break;
-            case NEM_LABEL_COK_YUKSEK:
-           strcpy(cikis,"orta");
-            break;
-        }
-        break;
         case SICAKLIK_LABEL_ORTA:
-          switch (current_label1)
-        {
-        case NEM_LABEL_COK_DUSUK:
-           strcpy(cikis,"orta");
+            switch (current_label1)
+            {
+            case NEM_LABEL_COK_DUSUK: strcpy(cikis,"orta"); break;
+            case NEM_LABEL_DUSUK: strcpy(cikis,"orta"); break;
+            case NEM_LABEL_ORTA: strcpy(cikis,"orta"); break;
+            case NEM_LABEL_YUKSEK: strcpy(cikis,"orta"); break;
+            case NEM_LABEL_COK_YUKSEK: strcpy(cikis,"dusuk"); break;
+            }
             break;
-        case NEM_LABEL_DUSUK:
-           strcpy(cikis,"orta");
+        case SICAKLIK_LABEL_YUKSEK:
+            switch (current_label1)
+            {
+            case NEM_LABEL_COK_DUSUK: strcpy(cikis,"dusuk"); break;
+            case NEM_LABEL_DUSUK: strcpy(cikis,"dusuk"); break;
+            case NEM_LABEL_ORTA: strcpy(cikis,"dusuk"); break;
+            case NEM_LABEL_YUKSEK: strcpy(cikis,"dusuk"); break;
+            case NEM_LABEL_COK_YUKSEK: strcpy(cikis,"dusuk"); break;
+            }
             break;
-        case NEM_LABEL_ORTA:
-           strcpy(cikis,"orta");
+        case SICAKLIK_LABEL_COK_YUKSEK:
+            switch (current_label1)
+            {
+            case NEM_LABEL_COK_DUSUK: strcpy(cikis,"cok_dusuk"); break;
+            case NEM_LABEL_DUSUK: strcpy(cikis,"cok_dusuk"); break;
+            case NEM_LABEL_ORTA: strcpy(cikis,"cok_dusuk"); break;
+            case NEM_LABEL_YUKSEK: strcpy(cikis,"cok_dusuk"); break;
+            case NEM_LABEL_COK_YUKSEK: strcpy(cikis,"cok_dusuk"); break;
+            }
             break;
-            case NEM_LABEL_YUKSEK:
-           strcpy(cikis,"orta");
-            break;
-            case NEM_LABEL_COK_YUKSEK:
-           strcpy(cikis,"dusuk");
-            break;
-        }
-        break;
-         case SICAKLIK_LABEL_YUKSEK:
-          switch (current_label1)
-        {
-        case NEM_LABEL_COK_DUSUK:
-           strcpy(cikis,"dusuk");
-            break;
-        case NEM_LABEL_DUSUK:
-           strcpy(cikis,"dusuk");
-            break;
-        case NEM_LABEL_ORTA:
-           strcpy(cikis,"dusuk");
-            break;
-            case NEM_LABEL_YUKSEK:
-           strcpy(cikis,"dusuk");
-            break;
-            case NEM_LABEL_COK_YUKSEK:
-           strcpy(cikis,"dusuk");
-            break;
-        }
-        break;
-         case SICAKLIK_LABEL_COK_YUKSEK:
-          switch (current_label1)
-        {
-        case NEM_LABEL_COK_DUSUK:
-           strcpy(cikis,"cok_dusuk");
-            break;
-        case NEM_LABEL_DUSUK:
-           strcpy(cikis,"cok_dusuk");
-            break;
-        case NEM_LABEL_ORTA:
-           strcpy(cikis,"cok_dusuk");
-            break;
-            case NEM_LABEL_YUKSEK:
-           strcpy(cikis,"cok_dusuk");
-            break;
-            case NEM_LABEL_COK_YUKSEK:
-           strcpy(cikis,"cok_dusuk");
-            break;
-        }
-        break;
         default:
             printf("Sicaklik etiketi: %s\n",SicaklikSozel);
             printf("HATA: Tanimsiz Sicaklik Etiketi.\n");
@@ -638,105 +488,55 @@ void FuzzyLogic::evaluate_rules_hum_soil(char *humidity_label, char *soil_label)
     switch (curr_label_humidity)
     {
         case NEM_LABEL_COK_DUSUK:
-        switch (curr_label_soil)
-        {
-        case NEMTOPRAK_LABEL_COK_DUSUK:
-           strcpy(water,"cok_yuksek");
-            break;
-        case NEMTOPRAK_LABEL_DUSUK:
-           strcpy(water,"cok_yuksek");
-            break;
-        case NEMTOPRAK_LABEL_ORTA:
-           strcpy(water,"yuksek");
-            break;
-            case NEMTOPRAK_LABEL_YUKSEK:
-           strcpy(water,"yuksek");
-            break;
-            case NEMTOPRAK_LABEL_COK_YUKSEK:
-           strcpy(water,"orta");
-            break;
-        }
+            switch (curr_label_soil)
+            {
+                case NEMTOPRAK_LABEL_COK_DUSUK: strcpy(water,"cok_yuksek"); break;
+                case NEMTOPRAK_LABEL_DUSUK: strcpy(water,"yuksek"); break;
+                case NEMTOPRAK_LABEL_ORTA: strcpy(water,"yuksek"); break;
+                case NEMTOPRAK_LABEL_YUKSEK: strcpy(water,"orta"); break;
+                case NEMTOPRAK_LABEL_COK_YUKSEK: strcpy(water,"dusuk"); break;
+            }
             break;
         case NEM_LABEL_DUSUK:
-        switch (curr_label_soil)
-        {
-        case NEMTOPRAK_LABEL_COK_DUSUK:
-           strcpy(water,"yuksek");
+            switch (curr_label_soil)
+            {
+            case NEMTOPRAK_LABEL_COK_DUSUK: strcpy(water,"cok_yuksek"); break;
+            case NEMTOPRAK_LABEL_DUSUK: strcpy(water,"yuksek"); break;
+            case NEMTOPRAK_LABEL_ORTA: strcpy(water,"orta"); break;
+            case NEMTOPRAK_LABEL_YUKSEK: strcpy(water,"orta"); break;
+            case NEMTOPRAK_LABEL_COK_YUKSEK: strcpy(water,"dusuk"); break;
+            }
             break;
-        case NEMTOPRAK_LABEL_DUSUK:
-           strcpy(water,"yuksek");
-            break;
-        case NEMTOPRAK_LABEL_ORTA:
-           strcpy(water,"yuksek");
-            break;
-            case NEMTOPRAK_LABEL_YUKSEK:
-           strcpy(water,"orta");
-            break;
-            case NEMTOPRAK_LABEL_COK_YUKSEK:
-           strcpy(water,"orta");
-            break;
-        }
-        break;
         case NEM_LABEL_ORTA:
-          switch (curr_label_soil)
-        {
-        case NEMTOPRAK_LABEL_COK_DUSUK:
-           strcpy(water,"yuksek");
+            switch (curr_label_soil)
+            {
+                case NEMTOPRAK_LABEL_COK_DUSUK: strcpy(water,"yuksek"); break;
+                case NEMTOPRAK_LABEL_DUSUK: strcpy(water,"yuksek"); break;
+                case NEMTOPRAK_LABEL_ORTA: strcpy(water,"orta"); break;
+                case NEMTOPRAK_LABEL_YUKSEK: strcpy(water,"dusuk"); break;
+                case NEMTOPRAK_LABEL_COK_YUKSEK: strcpy(water,"dusuk"); break;
+            }
             break;
-        case NEMTOPRAK_LABEL_DUSUK:
-           strcpy(water,"orta");
+        case NEM_LABEL_YUKSEK:
+            switch (curr_label_soil)
+            {
+                case NEMTOPRAK_LABEL_COK_DUSUK: strcpy(water,"yuksek"); break;
+                case NEMTOPRAK_LABEL_DUSUK: strcpy(water,"orta"); break;
+                case NEMTOPRAK_LABEL_ORTA: strcpy(water,"orta"); break;
+                case NEMTOPRAK_LABEL_YUKSEK: strcpy(water,"dusuk"); break;
+                case NEMTOPRAK_LABEL_COK_YUKSEK: strcpy(water,"cok_dusuk"); break;
+            }
             break;
-        case NEMTOPRAK_LABEL_ORTA:
-           strcpy(water,"orta");
+        case NEM_LABEL_COK_YUKSEK:
+            switch (curr_label_soil)
+            {
+                case NEMTOPRAK_LABEL_COK_DUSUK: strcpy(water,"dusuk"); break;
+                case NEMTOPRAK_LABEL_DUSUK: strcpy(water,"dusuk"); break;
+                case NEMTOPRAK_LABEL_ORTA: strcpy(water,"dusuk"); break;
+                case NEMTOPRAK_LABEL_YUKSEK: strcpy(water,"cok_dusuk"); break;
+                case NEMTOPRAK_LABEL_COK_YUKSEK: strcpy(water,"cok_dusuk"); break;
+            }
             break;
-            case NEMTOPRAK_LABEL_YUKSEK:
-           strcpy(water,"orta");
-            break;
-            case NEMTOPRAK_LABEL_COK_YUKSEK:
-           strcpy(water,"dusuk");
-            break;
-        }
-        break;
-         case NEM_LABEL_YUKSEK:
-          switch (curr_label_soil)
-        {
-        case NEMTOPRAK_LABEL_COK_DUSUK:
-           strcpy(water,"orta");
-            break;
-        case NEMTOPRAK_LABEL_DUSUK:
-           strcpy(water,"orta");
-            break;
-        case NEMTOPRAK_LABEL_ORTA:
-           strcpy(water,"dusuk");
-            break;
-            case NEMTOPRAK_LABEL_YUKSEK:
-           strcpy(water,"dusuk");
-            break;
-            case NEMTOPRAK_LABEL_COK_YUKSEK:
-           strcpy(water,"dusuk");
-            break;
-        }
-        break;
-         case NEM_LABEL_COK_YUKSEK:
-          switch (curr_label_soil)
-        {
-        case NEMTOPRAK_LABEL_COK_DUSUK:
-           strcpy(water,"dusuk");
-            break;
-        case NEMTOPRAK_LABEL_DUSUK:
-           strcpy(water,"dusuk");
-            break;
-        case NEMTOPRAK_LABEL_ORTA:
-           strcpy(water,"dusuk");
-            break;
-            case NEMTOPRAK_LABEL_YUKSEK:
-           strcpy(water,"cok_dusuk");
-            break;
-            case NEMTOPRAK_LABEL_COK_YUKSEK:
-           strcpy(water,"cok_dusuk");
-            break;
-        }
-        break;
         default:
             printf("Nem etiketi: %s\n", humidity_label);
             printf("HATA: Tanimsiz nem Etiketi.\n");
