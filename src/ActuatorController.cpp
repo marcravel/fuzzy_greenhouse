@@ -13,21 +13,21 @@ ActuatorController::ActuatorController()
 
 void ActuatorController::begin() {
     // PWM Setup for Heating, Cooling, Lighting
-    ledcSetup(PWM_CH_HEATING, PWM_FREQ, PWM_RES);
-    ledcAttachPin(PIN_HEATING_PWM, PWM_CH_HEATING);
+    // ledcSetup(PWM_CH_HEATING, PWM_FREQ, PWM_RES);
+    // ledcAttachPin(PIN_HEATING_PWM, PWM_CH_HEATING);
 
-    ledcSetup(PWM_CH_COOLING, PWM_FREQ, PWM_RES);
-    ledcAttachPin(PIN_COOLING_PWM, PWM_CH_COOLING);
+    // ledcSetup(PWM_CH_COOLING, PWM_FREQ, PWM_RES);
+    // ledcAttachPin(PIN_COOLING_PWM, PWM_CH_COOLING);
 
     ledcSetup(PWM_CH_LIGHTING, PWM_FREQ, PWM_RES);
     ledcAttachPin(PIN_LIGHTING_PWM, PWM_CH_LIGHTING);
 
     // Digital & Stepper Setup
-    pinMode(PIN_WATERING_DIGITAL, OUTPUT);
-    digitalWrite(PIN_WATERING_DIGITAL, LOW);
+    // pinMode(PIN_WATERING_DIGITAL, OUTPUT);
+    // digitalWrite(PIN_WATERING_DIGITAL, LOW);
 
-    pinMode(PIN_SHADOW_STEP, OUTPUT);
-    pinMode(PIN_SHADOW_DIR, OUTPUT);
+    // pinMode(PIN_SHADOW_STEP, OUTPUT);
+    // pinMode(PIN_SHADOW_DIR, OUTPUT);
     
     Serial.println("Actuator Controller Initialized");
 }
@@ -41,7 +41,7 @@ void ActuatorController::update(const SystemOutputs& outputs) {
     // setCooling(outputs.outputs[1].value);
     // setShadowing(outputs.outputs[2].value);
     // setWatering(outputs.outputs[3].value);
-    setLighting(outputs.outputs[4].value); // For testing, set constant lighting
+    setLighting(outputs.outputs[4].value);
 
     // Handle Stepper Movement (Non-blocking simple implementation)
     // In a real loop, you'd pulse every X millis. Here we burst a few steps per update or assume external driver.
@@ -89,7 +89,7 @@ void ActuatorController::setLighting(float lux) {
     int duty = map((long)lux, 0, (long)MAX_LIGHTING_LUX, 0, 255);
     duty = constrain(duty, 0, 255);
     ledcWrite(PWM_CH_LIGHTING, duty);
-    Serial.println("Lighting set to duty: " + String(duty));
+    Serial.println("Lighting set to duty: " + String(duty) + " " + String(lux) + "Lux");
 }
 
 void ActuatorController::setWatering(float liters) {

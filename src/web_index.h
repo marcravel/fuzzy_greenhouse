@@ -88,7 +88,7 @@ const char index_html[] PROGMEM = R"rawliteral(
     </table>
   </div>
 
-  <div class="section">
+  <!-- <div class="section">
     <h2>6 & 7. Kurallar ve İşlemler</h2>
     <button class="btn btn-action" onclick="alert('Kurallar listeleniyor...')">Uygulanan Kuralları Göster</button>
     <br><br>
@@ -97,7 +97,7 @@ const char index_html[] PROGMEM = R"rawliteral(
       <button class="btn btn-action">Acil Durdurma</button>
       <button class="btn btn-action">Rapor Al</button>
     </div>
-  </div>
+  </div> -->
   
   <p style="text-align:center; font-size:0.8em; color:#777;">ESP32 Dashboard • <span id="uptime"></span></p>
 </div>
@@ -105,11 +105,11 @@ const char index_html[] PROGMEM = R"rawliteral(
 <script>
   // Definition of variable names for mapping
   const inputNames = ["Sıcaklık", "Hava Nemi", "Işık Şiddeti", "Toprak Nemi"];
-  const outputNames = ["Işıklandırma", "Sulama", "Isıtma", "Gölgelendirme", "Soğutma"];
-  const outputUnits = ["Lux", "Lt", "kW", "m", "Micron"];
+  const outputNames = ["Isıtma", "Soğutma", "Gölgelendirme", "Sulama", "Işıklandırma"];
+  const outputUnits = ["kW", "Micron", "m", "Lt", "Lux"];
 
   // Fetch data every 1 second
-  setInterval(getData, 1000);
+  setInterval(getData, 500);
 
   function getData() {
     // cache-busting & no-store to avoid stale responses

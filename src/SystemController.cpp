@@ -48,7 +48,7 @@ void SystemController::processLogic() {
 
     // 2. Output Rules (Currently Random/Simulated as per original code)
     generateOutputs(currentDecisions);
-    // actuator.update(currentOutputs);
+    actuator.update(currentOutputs);
     
     // 3. Update Web Server State
     webServer.updateState(currentReadings, currentFuzzyState, currentFuzzyResults, currentOutputs);
@@ -59,19 +59,23 @@ void SystemController::processLogic() {
 
 void SystemController::generateOutputs(SystemDecisions decisions) {
     // Map decisions to outputs
-    currentOutputs.outputs[0].label = String(decisions.output_label_light);
-    currentOutputs.outputs[0].value = decisions.output_value_light;
+    currentOutputs.outputs[0].label = String(decisions.output_label_heat);
+    currentOutputs.outputs[0].value = decisions.output_value_heat;
+
+    currentOutputs.outputs[1].label = String(decisions.output_label_cooling);
+    currentOutputs.outputs[1].value = decisions.output_value_cooling;
+
+    currentOutputs.outputs[2].label = String(decisions.output_label_shadow);
+    currentOutputs.outputs[2].value = decisions.output_value_shadow;
+
+    currentOutputs.outputs[3].label = String(decisions.output_label_water);
+    currentOutputs.outputs[3].value = decisions.output_value_water;
+
+    currentOutputs.outputs[4].label = String(decisions.output_label_light);
+    currentOutputs.outputs[4].value = decisions.output_value_light;
     
-    currentOutputs.outputs[1].label = String(decisions.output_label_water);
-    currentOutputs.outputs[1].value = decisions.output_value_water;
     
-    currentOutputs.outputs[2].label = String(decisions.output_label_heat);
-    currentOutputs.outputs[2].value = decisions.output_value_heat;
     
-    currentOutputs.outputs[3].label = String(decisions.output_label_shadow);
-    currentOutputs.outputs[3].value = decisions.output_value_shadow;
     
-    currentOutputs.outputs[4].label = String(decisions.output_label_cooling);
-    currentOutputs.outputs[4].value = decisions.output_value_cooling;
     
 }
